@@ -3,11 +3,11 @@ var Route, app, express, port, route;
 
 express = require('express');
 
-Route = require('route');
-
-route = new Route(app);
+Route = require('./route');
 
 app = new express;
+
+route = new Route(app);
 
 port = process.env.PORT || 4000;
 

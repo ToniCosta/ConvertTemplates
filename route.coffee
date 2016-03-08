@@ -1,5 +1,8 @@
+homeController = require './controllers/home'
+
 class Route
 	constructor: (app) ->
-    app.route.get '/', controller.get
+
+    app.get '/', homeController.get
 
 module.exports = Route
