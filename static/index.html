@@ -55,23 +55,22 @@
 			    font-size: .875rem;
 			    line-height: 1.5rem;
 			    color: #40444f;
-			    background: #f5f9fa;
 			}
 
 			header{
 				overflow: hidden;
-			    background: -webkit-linear-gradient(top, #c6dde4, #fefeff);
-			    background: -moz-linear-gradient(top, #c6dde4, #fefeff);
-			    background: -o-linear-gradient(top, #c6dde4, #fefeff);
-			    background: -ms-linear-gradient(top, #c6dde4, #fefeff);
-			    background: linear-gradient(to bottom, #c6dde4, #fefeff);
+			    background: -webkit-linear-gradient(top, #c4c4c4, #fefeff);
+			    background: -moz-linear-gradient(top, #c4c4c4, #fefeff);
+			    background: -o-linear-gradient(top, #c4c4c4, #fefeff);
+			    background: -ms-linear-gradient(top, #c4c4c4, #fefeff);
+			    background: linear-gradient(to bottom, #c4c4c4, #fefeff);
 			}
 			header nav {
 			    position: relative;
 			    z-index: 4;
 			    display: block;
 			    padding: 0;
-			    background-color: #fff;
+			    background-color: #282828;
 			    border: 0 solid #c0c8cb;
 			    border-width: .0625rem 0;
 			}
@@ -89,17 +88,17 @@
 			    display: inline-block;
 			    padding: 1.05rem 1rem .95rem;
 			    line-height: .95rem;
-			    color: #40444f;
+			    color: #fff;
 			    font-size: .85rem;
 			    text-transform: uppercase;
-			    background-color: #fff;
+			    background-color: #282828;
 			    -webkit-transition: background-color 0.15s ease-out;
 			    -moz-transition: background-color 0.15s ease-out;
 			    -o-transition: background-color 0.15s ease-out;
 			    -ms-transition: background-color 0.15s ease-out;
 			    transition: background-color 0.15s ease-out;
 			}
-			header nav ul li a:hover{text-decoration:none;background-color:#ededed}
+			header nav ul li a:hover{text-decoration:none;background-color:#969696}
 			section.upload {
 			    position: relative;
 			    -webkit-box-sizing: border-box;
@@ -109,10 +108,13 @@
 			    margin: 0 auto;
 			    padding: 3rem 1rem 3.5rem;
 			}
+			section.upload p{
+				text-align: center;
+			}
 			section.upload section.target {
 			    position: relative;
 			    z-index: 6;
-			    width: 24rem;
+			    width: 34rem;
 			    height: auto;
 			    margin: 0 auto;
 			    padding: 0 0 1rem;
@@ -128,18 +130,24 @@
 			    transition: color 0.2s ease-out, border-color 0.2s ease-out;
 			}
 			section.upload section.target:hover{color:#616778;border-color:#9a9fad}
+			section.upload section.target.hover{color:#616778;border-color:#9a9fad}
 			section.upload input[type="file"]{ position: absolute; opacity: 0; top:-69px; }
 			section.upload section.target figure.icon {
-			    display: inline-block;
-			    width: 4rem;
-			    height: 3.6rem;
-			    background-position: -1.125rem -7.625rem;
-			    background-repeat: no-repeat;
-			    -webkit-background-size: 37.5rem;
-			    -moz-background-size: 37.5rem;
-			    background-size: 37.5rem;
-			    background-image: url(../assets/images/download.png);
+			    width: 55px;
+			    height: 68px;
+			    background: url(assets/images/logo_convert.png);
+			    
 			    display: block;
+			    margin: 10px auto;
+			}
+			[draggable] {
+			  -moz-user-select: none;
+			  -khtml-user-select: none;
+			  -webkit-user-select: none;
+			  user-select: none;
+			  /* Required to make elements draggable in old WebKit */
+			  -khtml-user-drag: element;
+			  -webkit-user-drag: element;
 			}
 
 	    </style>
@@ -164,7 +172,8 @@
 	    		
 	    		<section class="target">
 	    			<figure class="icon"></figure>
-	    			<p>Arraste seus arquivos aqui!</p><p><p class="pathURL"></p>
+	    			<p>Arraste seus arquivos aqui!</p>
+	    			<p class="pathURL"></p>
 	    			
 	    		</section>
     			<input id="file" type="file" multiple="">    		
@@ -178,13 +187,43 @@
 			target.onclick = function(){
 				inputFile.click();
 				
-				
 			}
 			inputFile.onchange = function(){
 				var pathSplit = inputFile.value.split ('\\');
 				pathURL.innerHTML = pathSplit[2];
 				
 			}
+
+			function handleFileSelect(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+
+				var files = evt.dataTransfer.files; // FileList object.
+
+				// files is a FileList of File objects. List some properties.
+				var output = [];
+				for (var i = 0, f; f = files[i]; i++) {
+				  output.push('<strong>', escape(f.name), '</strong>');
+				}
+				pathURL.innerHTML = output.join('');
+			}
+
+			function handleDragOver(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				if (evt.target.className === 'hover'){
+					return
+				}else{
+					evt.target.className += ' hover';
+				}
+				
+				evt.dataTransfer.dropEffect = 'copy'; 
+			}
+					
+			target.addEventListener('dragover', handleDragOver, false);
+			target.addEventListener('drop', handleFileSelect, false);
+			
+
 		</script>
 	</body>
 </html>
