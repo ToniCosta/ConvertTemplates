@@ -31,8 +31,10 @@ jsdom.jQueryify doc.defaultView, 'http://code.jquery.com/jquery.js', ->
   $ = doc.defaultView.$
   contentBanner = $('#page1').parent().html()
   cssBanner = $('style').each((el) ->
+    # cssBanner = $(this).html().replaceAll('.gwd-play-animation', '')
     cssBanner = $(this).html();
     console.log(cssBanner);
+    # console.log(cssBanner);
     return
   )
   # console.log(contentBanner);
@@ -62,7 +64,7 @@ jsdom.jQueryify doc.defaultView, 'http://code.jquery.com/jquery.js', ->
       # var replace = str.replace('<img is="gwd-image" source="','<img src="');
       # console.log("##" + replace);
       # console.log(contentBannerAdmotion.html());
-      fs.writeFile 'templates/admotion/970x90/template3.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
+      fs.writeFile 'templates/admotion/970x90/template5.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
         if err
           throw err
         console.log 'Template Convertido com sucesso.'

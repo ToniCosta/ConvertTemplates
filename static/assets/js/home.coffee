@@ -32,8 +32,9 @@ handleTarget = ->
 
 
 handleInputFile = ->
-	pathSplit = inputFile.value.split('\\')
-	pathURL.innerHTML = pathSplit[2]
+	# pathSplit = inputFile.value.split('\\')
+	# pathURL.innerHTML = pathSplit[2]
+	pathURL.innerHTML = inputFile.value
 	return
 target.addEventListener 'click', handleTarget, false
 inputFile.addEventListener 'change', handleInputFile, false

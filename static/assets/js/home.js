@@ -38,9 +38,7 @@ handleTarget = function() {
 };
 
 handleInputFile = function() {
-  var pathSplit;
-  pathSplit = inputFile.value.split('\\');
-  pathURL.innerHTML = pathSplit[2];
+  pathURL.innerHTML = inputFile.value;
 };
 
 target.addEventListener('click', handleTarget, false);

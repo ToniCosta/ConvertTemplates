@@ -68,7 +68,7 @@ jsdom.jQueryify(doc.defaultView, 'http://code.jquery.com/jquery.js', function() 
         tag.attr('src', 'custom/images/' + source);
         console.log(tag[0].outerHTML);
       });
-      fs.writeFile('templates/admotion/970x90/template3.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
+      fs.writeFile('templates/admotion/970x90/template5.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
         if (err) {
           throw err;
         }
