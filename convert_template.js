@@ -5,9 +5,9 @@ jsdom = require('jsdom');
 
 fs = require('fs');
 
-htmlSource = fs.readFileSync('generics/970x90/index.html', 'utf8');
+htmlSource = fs.readFileSync('templates/generics/970x90/index.html', 'utf8');
 
-htmlSourceAdmotion = fs.readFileSync('admotion/970x90/index.html', 'utf8');
+htmlSourceAdmotion = fs.readFileSync('templates/admotion/970x90/index.html', 'utf8');
 
 fsExtra = require('fs-extra');
 
@@ -31,13 +31,13 @@ doc2 = jsdom.jsdom(htmlSourceAdmotion, {
   parsingMode: 'auto'
 });
 
-fsExtra.copy('generics/970x90/', 'admotion/970x90/custom/images/', function(err) {
+fsExtra.copy('templates/generics/970x90/', 'templates/admotion/970x90/custom/images/', function(err) {
   var filePath;
   if (err) {
     return console.error(err);
   }
   console.log('success!');
-  filePath = 'admotion/970x90/custom/images/index.html';
+  filePath = 'templates/admotion/970x90/custom/images/index.html';
   fs.unlinkSync(filePath);
 });
 
@@ -45,13 +45,19 @@ jsdom.jQueryify(doc.defaultView, 'http://code.jquery.com/jquery.js', function() 
   var $, contentBanner, cssBanner, fnc;
   $ = doc.defaultView.$;
   contentBanner = $('#page1').parent().html();
-  cssBanner = $('style').each(function(el) {});
+  cssBanner = $('style').each(function(el) {
+    cssBanner = $(this).html();
+    console.log(cssBanner);
+  });
   fnc = (function(css, banner) {
     return function() {
       $;
-      var contentBannerAdmotion, replaceImg;
+      var contentBannerAdmotion, headerAdmotion, replaceImg;
       $ = doc2.defaultView.$;
       contentBannerAdmotion = $('#Creativity');
+      headerAdmotion = $('head');
+      console.log(css, banner);
+      headerAdmotion.prepend(cssBanner);
       contentBannerAdmotion.prepend(contentBanner);
       replaceImg = $('img').each(function(index, data) {
         var source, tag;
@@ -62,7 +68,7 @@ jsdom.jQueryify(doc.defaultView, 'http://code.jquery.com/jquery.js', function() 
         tag.attr('src', 'custom/images/' + source);
         console.log(tag[0].outerHTML);
       });
-      fs.writeFile('admotion/970x90/template3.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
+      fs.writeFile('templates/admotion/970x90/template3.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
         if (err) {
           throw err;
         }

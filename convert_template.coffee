@@ -1,7 +1,7 @@
 jsdom = require('jsdom')
 fs = require('fs')
-htmlSource = fs.readFileSync('generics/970x90/index.html', 'utf8')
-htmlSourceAdmotion = fs.readFileSync('admotion/970x90/index.html', 'utf8')
+htmlSource = fs.readFileSync('templates/generics/970x90/index.html', 'utf8')
+htmlSourceAdmotion = fs.readFileSync('templates/admotion/970x90/index.html', 'utf8')
 fsExtra = require('fs-extra')
 glob = require('glob')
 
@@ -17,11 +17,11 @@ doc2 = jsdom.jsdom(htmlSourceAdmotion,
     ProcessExternalResources: [ 'script' ]
     MutationEvents: '2.0'
   parsingMode: 'auto')
-fsExtra.copy 'generics/970x90/', 'admotion/970x90/custom/images/', (err) ->
+fsExtra.copy 'templates/generics/970x90/', 'templates/admotion/970x90/custom/images/', (err) ->
   if err
     return console.error(err)
   console.log 'success!'
-  filePath = 'admotion/970x90/custom/images/index.html'
+  filePath = 'templates/admotion/970x90/custom/images/index.html'
   fs.unlinkSync filePath
   #remove HTML
   return
@@ -31,8 +31,8 @@ jsdom.jQueryify doc.defaultView, 'http://code.jquery.com/jquery.js', ->
   $ = doc.defaultView.$
   contentBanner = $('#page1').parent().html()
   cssBanner = $('style').each((el) ->
-    # cssBanner = $(this).html();
-    # console.log(cssBanner);
+    cssBanner = $(this).html();
+    console.log(cssBanner);
     return
   )
   # console.log(contentBanner);
@@ -43,9 +43,9 @@ jsdom.jQueryify doc.defaultView, 'http://code.jquery.com/jquery.js', ->
       #console.log('2');
       $ = doc2.defaultView.$
       contentBannerAdmotion = $('#Creativity')
-      # var headerAdmotion = $('head');
-      # console.log(css,banner);
-      # headerAdmotion.prepend(cssBanner);
+      headerAdmotion = $('head');
+      console.log(css,banner);
+      headerAdmotion.prepend(cssBanner);
       contentBannerAdmotion.prepend contentBanner
       replaceImg = $('img').each((index, data) ->
         tag = $(data)
@@ -62,7 +62,7 @@ jsdom.jQueryify doc.defaultView, 'http://code.jquery.com/jquery.js', ->
       # var replace = str.replace('<img is="gwd-image" source="','<img src="');
       # console.log("##" + replace);
       # console.log(contentBannerAdmotion.html());
-      fs.writeFile 'admotion/970x90/template3.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
+      fs.writeFile 'templates/admotion/970x90/template3.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
         if err
           throw err
         console.log 'Template Convertido com sucesso.'

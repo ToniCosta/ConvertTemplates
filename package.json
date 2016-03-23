@@ -6,7 +6,11 @@
   "dependencies": {
     "express": "^4.12.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "fs": "0.0.2",
+    "fs-extra": "^0.26.7",
+    "jsdom": "^8.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
