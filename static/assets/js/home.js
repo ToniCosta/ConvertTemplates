@@ -16,7 +16,7 @@ handleFileSelect = function(evt) {
   i = 0;
   f = void 0;
   while (f = files[i]) {
-    output.push('<strong>', escape(f.name), '</strong>');
+    output.push('<strong>', escape(f.name), '</strong><br>');
     i++;
     pathURL.innerHTML = output.join('');
   }
@@ -45,7 +45,7 @@ handleInputFile = function() {
 
 target.addEventListener('click', handleTarget, false);
 
-inputFile.addEventListener('onchange', handleTarget, false);
+inputFile.addEventListener('change', handleInputFile, false);
 
 target.addEventListener('dragover', handleDragOver, false);
 

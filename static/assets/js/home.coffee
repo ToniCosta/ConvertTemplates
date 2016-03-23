@@ -10,7 +10,7 @@ handleFileSelect = (evt) ->
 	i = 0
 	f = undefined
 	while f = files[i]
-		output.push '<strong>', escape(f.name), '</strong>'
+		output.push '<strong>', escape(f.name), '</strong><br>'
 		i++
 		pathURL.innerHTML = output.join('')
 	return
@@ -30,12 +30,12 @@ handleTarget = ->
 	inputFile.click()
 	return
 
+
 handleInputFile = ->
 	pathSplit = inputFile.value.split('\\')
 	pathURL.innerHTML = pathSplit[2]
 	return
-
 target.addEventListener 'click', handleTarget, false
-inputFile.addEventListener 'onchange', handleTarget, false
+inputFile.addEventListener 'change', handleInputFile, false
 target.addEventListener 'dragover', handleDragOver, false
 target.addEventListener 'drop', handleFileSelect, false
