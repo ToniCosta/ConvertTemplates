@@ -10,18 +10,25 @@ fsExtra = require('fs-extra');
 prompt = require('prompt');
 
 setPath = function() {
-  var filePath;
-  filePath = '_templates/';
-  fs.unlinkSync(filePath);
   prompt.start();
-  return prompt.get(['PATHURL'], function(err, result) {
-    startConvert(result.PATHURL);
+  return prompt.get(['PATHURL', 'AdServer'], function(err, result) {
+    console.log(result.AdServer);
+    startConvert(result.PATHURL, result.AdServer);
   });
 };
 
-startConvert = function(pathURL) {
-  var htmlSource, htmlSourceAdmotion, sourceTemplate, sourceTemplateAdmotion;
-  htmlSource = fs.readFileSync(pathURL + '/index.html', 'utf8');
+startConvert = function(pathURL, adServer) {
+  var htmlSource, htmlSourceAdmotion, selectAdserver, sourceTemplate, sourceTemplateAdmotion;
+  if (adServer === 'admotion') {
+    selectAdserver = pathURL + '\\' + adServer;
+    console.log('admotion');
+  }
+  if (adServer === 'atlas') {
+    selectAdserver = pathURL + '\\' + adServer;
+    console.log('atlas');
+  }
+  console.log(selectAdserver);
+  htmlSource = fs.readFileSync(selectAdserver + '/index.html', 'utf8');
   htmlSourceAdmotion = fs.readFileSync('templates/admotion/970x90/index.html', 'utf8');
   sourceTemplate = jsdom.jsdom(htmlSource, {
     features: {

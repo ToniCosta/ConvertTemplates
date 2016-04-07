@@ -1,0 +1,43 @@
+/* Copyright (c) 2013 Admotion */
+/* Custom Stylesheet: Add, remove or overwrite the template rules here */
+@charset "utf-8";
+
+/******************/
+/* Creativity */
+/******************/
+
+.inpage-section {
+}
+
+.inpage-section #Creativity {
+	background-color: #EAEDE9;
+}
+
+
+.inpage-section  #Creativity_CloseButton {
+	position: inherit;
+	right:10px;
+	top: 10px;
+}
+
+/****************/
+/* Button Class */
+/****************/
+
+.inpage-section .adm-close-button {
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	text-decoration:none;
+	cursor: pointer;
+	padding:4px 6px;
+	display:block;
+	color:#FFFFFF;
+	font-size:11px;
+	width:auto;
+	height:auto;
+	background: #000000;
+}
+
+.inpage-section .adm-close-button:hover {
+	background: #666;
+}

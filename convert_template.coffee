@@ -4,18 +4,26 @@ fsExtra = require('fs-extra')
 prompt = require('prompt');
 
 setPath = ->
-    filePath = '_templates/'
-    fs.unlinkSync filePath
+    
     prompt.start();
 
-    prompt.get(['PATHURL'], (err, result) ->
-        startConvert(result.PATHURL)
+    prompt.get(['PATHURL','AdServer'], (err, result) ->
+        console.log(result.AdServer)
+        startConvert(result.PATHURL, result.AdServer)
         return
     
     )
 
-startConvert = (pathURL) ->
-    htmlSource = fs.readFileSync(pathURL + '/index.html', 'utf8')
+startConvert = (pathURL, adServer) ->
+    if (adServer == 'admotion')
+        selectAdserver = pathURL+'\\'+adServer
+        console.log('admotion')
+    if (adServer == 'atlas')
+        selectAdserver = pathURL+'\\'+adServer
+        console.log('atlas')
+
+    console.log selectAdserver
+    htmlSource = fs.readFileSync(selectAdserver + '/index.html', 'utf8')
     htmlSourceAdmotion = fs.readFileSync('templates/admotion/970x90/index.html', 'utf8')
 
     sourceTemplate = jsdom.jsdom(htmlSource,
