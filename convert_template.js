@@ -18,76 +18,24 @@ setPath = function() {
 };
 
 startConvert = function(pathURL, adServer) {
-  var htmlSource, htmlSourceAdmotion, selectAdserver, sourceTemplate, sourceTemplateAdmotion;
+  var destAdserver, srcAdserver;
   if (adServer === 'admotion') {
-    selectAdserver = pathURL + '\\' + adServer;
+    destAdserver = pathURL + '\\' + adServer;
+    srcAdserver = 'templates/Admotion/Banner';
     console.log('admotion');
   }
   if (adServer === 'atlas') {
-    selectAdserver = pathURL + '\\' + adServer;
+    srcAdserver = 'templates/atlas';
+    destAdserver = pathURL + '\\' + adServer;
     console.log('atlas');
   }
-  console.log(selectAdserver);
-  htmlSource = fs.readFileSync(selectAdserver + '/index.html', 'utf8');
-  htmlSourceAdmotion = fs.readFileSync('templates/admotion/970x90/index.html', 'utf8');
-  sourceTemplate = jsdom.jsdom(htmlSource, {
-    features: {
-      FetchExternalResources: ['script'],
-      ProcessExternalResources: ['script'],
-      MutationEvents: '2.0'
-    },
-    parsingMode: 'auto'
-  });
-  sourceTemplateAdmotion = jsdom.jsdom(htmlSourceAdmotion, {
-    features: {
-      FetchExternalResources: ['script'],
-      ProcessExternalResources: ['script'],
-      MutationEvents: '2.0'
-    },
-    parsingMode: 'auto'
-  });
-  fsExtra.copy(pathURL, 'templates/admotion/970x90/custom/images/', function(err) {
-    var filePath;
+  fsExtra.copy(srcAdserver, destAdserver, function(err) {
     if (err) {
       return console.error(err);
     }
-    console.log('success!');
-    filePath = 'templates/admotion/970x90/custom/images/index.html';
-    fs.unlinkSync(filePath);
+    return console.log('success! paste');
   });
-  return jsdom.jQueryify(sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', function() {
-    var $, contentBanner, cssBanner, fnc;
-    $ = sourceTemplate.defaultView.$;
-    contentBanner = $('#page1').parent().html();
-    cssBanner = $('style').each(function(el, data) {});
-    fnc = (function(css, banner) {
-      return function() {
-        var contentBannerAdmotion, headerAdmotion, replaceImg;
-        $ = sourceTemplateAdmotion.defaultView.$;
-        contentBannerAdmotion = $('#Creativity');
-        headerAdmotion = $('head');
-        console.log(css, banner);
-        headerAdmotion.append(cssBanner);
-        contentBannerAdmotion.prepend(contentBanner);
-        replaceImg = $('img').each(function(index, data) {
-          var source, tag;
-          tag = $(data);
-          source = tag.attr('source');
-          tag.removeAttr('is');
-          tag.removeAttr('source');
-          tag.attr('src', 'custom/images/' + source);
-          console.log(tag[0].outerHTML);
-        });
-        fs.writeFile('templates/admotion/970x90/convertido.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
-          if (err) {
-            throw err;
-          }
-          console.log('Template Convertido com sucesso.');
-        });
-      };
-    })(cssBanner, contentBanner);
-    jsdom.jQueryify(sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc);
-  });
+  return console.log(destAdserver);
 };
 
 setPath();
