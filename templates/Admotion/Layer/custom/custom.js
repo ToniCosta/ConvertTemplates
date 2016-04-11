@@ -13,6 +13,7 @@ function setButtonHandlers(){
 	});
 	
 	$(".closer").click(function () {
+		console.log('close btn')
 		doClose(true);
 	});
 }

@@ -1,0 +1,11 @@
+/* Copyright (c) 2013 Admotion */
+/* Custom Stylesheet: Add, remove or overwrite the template rules here */
+@charset "utf-8";
+
+/*--------------------------------------*/
+/* Creativity style							*/
+/*--------------------------------------*/
+
+.inpage-section #Creativity{
+	background-color: #EAEDE9;
+}

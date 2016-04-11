@@ -1,51 +1,70 @@
 jsdom = require('jsdom')
 fs = require('fs')
 fsExtra = require('fs-extra')
-prompt = require('prompt');
+prompt = require('prompt')
+path = require('path')
+glob = require('glob')
 
 setPath = ->
     
-    prompt.start();
+    # prompt.start();
 
-    prompt.get(['PATHURL','AdServer'], (err, result) ->
-        console.log(result.AdServer)
-        startConvert(result.PATHURL, result.AdServer)
-        return
+    # prompt.get(['PATHURL','AdServer'], (err, result) ->
+    #     # console.log(result.AdServer)
+    #     startConvert(result.PATHURL, result.AdServer)
+    #     return
     
-    )
+    # )
+    pathURL = 'C:/Users/costaan/Documents/GitHub/ConvertTemplates/templates/pecas_conversao/300x250'
+    adServer = 'admotion'
+
+    startConvert(pathURL, adServer)
 
 startConvert = (pathURL, adServer) ->
     
     if (adServer == 'admotion')
-        destAdserver = pathURL+'\\'+adServer
         srcAdserver = 'templates/Admotion/Banner'
-        console.log('admotion')
+        destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/#{adServer}"
+        # console.log('admotion')
     if (adServer == 'atlas')
         srcAdserver = 'templates/atlas'
         destAdserver = pathURL+'\\'+adServer
 
-        console.log('atlas')
+        # console.log('atlas')
 
     fsExtra.copy srcAdserver, destAdserver, (err) ->
         if err
             return console.error(err)
         console.log 'success! paste'
-        
-    console.log destAdserver
+
+        for extension in ['*.jpg','*.png','*.gif']
+            glob "#{pathURL}/#{extension}", null, (err, files) ->
+
+                if err
+                    return console.error(err)
+                for file in files
+                    console.log file
+                    fsExtra.copy file, "#{destAdserver}/custom/images/#{path.basename file}", (err) ->
+                        if err
+                            return console.error(err)
 
 
-    # fsExtra.copy pathURL, destAdserver+'/custom/images/', (err) ->
-    #     if err
-    #         return console.error(err)
-    #     console.log 'success! imgs'
-    # filePath = destAdserver+'/custom/images/index.html'
-    # fs.unlinkSync filePath
-    # #remove HTML
-    # return
+
+        # fsExtra.copy pathURL, "#{destAdserver}/custom/images/", (err) ->
+        #     if err
+        #         return console.error(err)
+        #     console.log 'success! imgs'
+        #     filePath = "#{destAdserver}/custom/images/index.html"
+        #     fs.unlinkSync filePath
+        # #remove HTML
+        # return
 
     
-    # htmlSource = fs.readFileSync(destAdserver + '/index.html', 'utf8')
-    # htmlSourceAdmotion = fs.readFileSync('templates/admotion/970x90/index.html', 'utf8')
+            
+    console.log destAdserver
+    
+    # htmlSource = fs.readFileSync(pathURL + '/index.html', 'utf8')
+    # htmlSourceAdmotion = fs.readFileSync(destAdserver+'/index.html', 'utf8')
 
     # sourceTemplate = jsdom.jsdom(htmlSource,
     #     features:
@@ -118,4 +137,5 @@ startConvert = (pathURL, adServer) ->
     #     jsdom.jQueryify sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc
     #     return
 setPath()
+
 
