@@ -31,7 +31,7 @@ startConvert = function(pathURL, adServer) {
       srcAdserver = 'templates/atlas';
       destAdserver = pathURL + '\\' + adServer;
   }
-  fsExtra.copy(srcAdserver, destAdserver, function(err) {
+  return fsExtra.copy(srcAdserver, destAdserver, function(err) {
     var extension, htmlSource, htmlSourceAdmotion, i, len, ref, sourceTemplate, sourceTemplateAdmotion;
     if (err) {
       return console.error(err);
@@ -80,28 +80,21 @@ startConvert = function(pathURL, adServer) {
       var $, contentBanner, cssBanner, fnc;
       $ = sourceTemplate.defaultView.$;
       contentBanner = $('#page1').parent().html();
-      cssBanner = $('style').each(function(el, data) {
-        var cssBannerData;
-        cssBannerData = $(data).html();
-      });
+      cssBanner = $('style');
       fnc = (function(css, banner) {
         return function() {
-          var contentBannerAdmotion, headerAdmotion, replaceCss, replaceImg;
+          var contentBannerAdmotion, headerAdmotion, replaceImg;
           $ = sourceTemplateAdmotion.defaultView.$;
           contentBannerAdmotion = $('#Creativity');
           headerAdmotion = $('head');
           headerAdmotion.append(cssBanner);
           contentBannerAdmotion.prepend(contentBanner);
-          replaceCss = $('style').each(function(index, data) {
-            var tagCss;
-            tagCss = $(data);
-            return console.log(tagCss);
-          });
           replaceImg = $('img[is="gwd-image"]').each(function(index, data) {
             var source, tag;
             tag = $(data);
             source = tag.attr('source');
             tag.removeAttr('is');
+            tag.removeAttr('id');
             tag.removeAttr('source');
             tag.attr('src', 'custom/images/' + source);
             return console.log(tag[0].outerHTML);
@@ -117,7 +110,6 @@ startConvert = function(pathURL, adServer) {
       return jsdom.jQueryify(sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc);
     });
   });
-  return console.log(destAdserver);
 };
 
 setPath();

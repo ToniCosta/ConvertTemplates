@@ -74,29 +74,11 @@ startConvert = (pathURL, adServer) ->
                 MutationEvents: '2.0'
             parsingMode: 'auto')
 
-
-        
-
         jsdom.jQueryify sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', ->
             #console.log('1');
             $ = sourceTemplate.defaultView.$
             contentBanner = $('#page1').parent().html()
-            cssBanner = $('style').each((el,data) ->
-        
-                # console.log cssbanner
-                # console.log(cssBannerDataReplace);
-                cssBannerData = $(data).html();    
-                # console.log cssBannerData
-                # cssBannerFind = '.gwd-play-animation'
-                # cssBannerRegx = new RegExp(cssBannerFind,'g')
-                # cssBannerDataReplace = cssBannerData.replace(cssBannerRegx, '')
-                # cssBanner = $(this).html().replaceAll('.gwd-play-animation', '')
-                # cssBanner = $(data).html();
-                # console.log(cssBannerDataReplace);
-                # console.log(cssBanner);
-                return 
-
-            )
+            cssBanner = $('style')
             
             fnc = ((css, banner) ->
                 ->
@@ -109,34 +91,12 @@ startConvert = (pathURL, adServer) ->
                     headerAdmotion.append(cssBanner);
 
                     contentBannerAdmotion.prepend contentBanner
-                    # replaceCss = $('style').each((el,data) ->
-                    #     cssData = $(data)
-                    # )
-                    replaceCss = $('style').each((index, data) ->
-                        tagCss = $(data)
-                        $(this).html().replace('.gwd-play-animation','')
-                        for tagCss in '.gwd-play-animation'
-                            find = '.gwd-play-animation'
-                            regExp = new RegExp(find, 'g')
-                            str = tagCss.replace(regExp, '')
-                            
-                            
-                            console.log str
-                            # console.log $(this).html().replace('.gwd-play-animation','');
-                           
-                        
-                        # console.log text
-                                
-                                                    
-                        # $(this).text(text.replace('.gwd-play-animation', '')); 
-                        # console.log replaceCss
-                    )
-                        
 
                     replaceImg = $('img[is="gwd-image"]').each((index, data) ->
                         tag = $(data)
                         source = tag.attr('source')
                         tag.removeAttr 'is'
+                        tag.removeAttr 'id'
                         tag.removeAttr 'source'
                         tag.attr 'src', 'custom/images/' + source
                         # console.log('index '+ index,'data'+ data);
@@ -153,9 +113,7 @@ startConvert = (pathURL, adServer) ->
             )(cssBanner, contentBanner)
             jsdom.jQueryify sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc
         return
-    console.log destAdserver
-    
-    
+      
 setPath()
 
 

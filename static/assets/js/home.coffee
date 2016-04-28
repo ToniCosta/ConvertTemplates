@@ -46,62 +46,62 @@ target.addEventListener 'dragover', handleDragOver, false
 target.addEventListener 'drop', handleFileSelect, false
 
 	
-XMLHttpFactories = [
-	->
-		new XMLHttpRequest
-	->
-		new ActiveXObject('Msxml2.XMLHTTP')
-	->
-		new ActiveXObject('Msxml3.XMLHTTP')
-	->
-		new ActiveXObject('Microsoft.XMLHTTP')
-]
+# XMLHttpFactories = [
+# 	->
+# 		new XMLHttpRequest
+# 	->
+# 		new ActiveXObject('Msxml2.XMLHTTP')
+# 	->
+# 		new ActiveXObject('Msxml3.XMLHTTP')
+# 	->
+# 		new ActiveXObject('Microsoft.XMLHTTP')
+# ]
 
-sendRequest = (url, callback, postData) ->
-	req = createXMLHTTPObject()
-	if !req
-		return
-	method = if postData then 'POST' else 'GET'
-	req.open method, url, true
-	# req.setRequestHeader 'User-Agent', 'XMLHTTP/1.0'
+# sendRequest = (url, callback, postData) ->
+# 	req = createXMLHTTPObject()
+# 	if !req
+# 		return
+# 	method = if postData then 'POST' else 'GET'
+# 	req.open method, url, true
+# 	# req.setRequestHeader 'User-Agent', 'XMLHTTP/1.0'
 	
-	if postData
-		req.setRequestHeader 'Content-type', 'application/x-www-form-urlencoded'
+# 	if postData
+# 		req.setRequestHeader 'Content-type', 'application/x-www-form-urlencoded'
 
-	req.onreadystatechange = ->
-	if req.readyState != 4
-		return
-	if req.status != 200 and req.status != 304
-		 # alert('HTTP error ' + req.status);
-		return
-	callback req
-	return
+# 	req.onreadystatechange = ->
+# 	if req.readyState != 4
+# 		return
+# 	if req.status != 200 and req.status != 304
+# 		 # alert('HTTP error ' + req.status);
+# 		return
+# 	callback req
+# 	return
 
-	if req.readyState == 4
-		return
-	req.send postData
-	return
+# 	if req.readyState == 4
+# 		return
+# 	req.send postData
+# 	return
 
-createXMLHTTPObject = ->
-	xmlhttp = false
-	i = 0
-	while i < XMLHttpFactories.length
-		try
-			xmlhttp = XMLHttpFactories[i]()
-		catch e
-			i++
-			i++
-			continue
-		break
-		i++
-	xmlhttp
+# createXMLHTTPObject = ->
+# 	xmlhttp = false
+# 	i = 0
+# 	while i < XMLHttpFactories.length
+# 		try
+# 			xmlhttp = XMLHttpFactories[i]()
+# 		catch e
+# 			i++
+# 			i++
+# 			continue
+# 		break
+# 		i++
+# 	xmlhttp
 
-handleRequest = (req) ->
-	writeroot = document.getElementsByClassName('pathURL');
-	writeroot.innerHTML = req.responseText
-	return
-	sendRequest 'index.html', handleRequest
+# handleRequest = (req) ->
+# 	writeroot = document.getElementsByClassName('pathURL');
+# 	writeroot.innerHTML = req.responseText
+# 	return
+# 	sendRequest 'index.html', handleRequest
 
-window.onload = () ->
+# window.onload = () ->
 
 
