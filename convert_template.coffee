@@ -4,6 +4,10 @@ fsExtra = require('fs-extra')
 prompt = require('prompt')
 path = require('path')
 glob = require('glob')
+# toolbox = require('./classes/toolbox.js')
+
+# box = new toolbox;
+
 
 setPath = ->
     
@@ -15,20 +19,25 @@ setPath = ->
     #     return
     
     # )
-    pathURL = 'C:/Users/costaan/Documents/GitHub/ConvertTemplates/templates/pecas_conversao/300x250'
+    pathURL = './templates/pecas_conversao/300x250'
     adServer = 'admotion'
 
     startConvert(pathURL, adServer)
+    return
 
 startConvert = (pathURL, adServer) ->
-    
-    if (adServer == 'admotion')
-        srcAdserver = 'templates/Admotion/Banner'
-        destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/#{adServer}"
-        # console.log('admotion')
-    if (adServer == 'atlas')
-        srcAdserver = 'templates/atlas'
-        destAdserver = pathURL+'\\'+adServer
+    switch adServer
+        when 'admotion' then srcAdserver = 'templates/Admotion/Banner'; destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/#{adServer}"
+        when 'atlas' then srcAdserver = 'templates/atlas'; destAdserver = pathURL+'\\'+adServer
+        
+  
+    # if (adServer == 'admotion')
+    #     srcAdserver = 'templates/Admotion/Banner'
+    #     destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/#{adServer}"
+    #     # console.log('admotion')
+    # if (adServer == 'atlas')
+    #     srcAdserver = 'templates/atlas'
+    #     destAdserver = pathURL+'\\'+adServer
 
         # console.log('atlas')
 
@@ -48,94 +57,105 @@ startConvert = (pathURL, adServer) ->
                         if err
                             return console.error(err)
 
+        htmlSource = fs.readFileSync("#{pathURL}/index.html", 'utf8')
+        htmlSourceAdmotion = fs.readFileSync("#{destAdserver}/index.html", 'utf8')
+
+        sourceTemplate = jsdom.jsdom(htmlSource,
+            features:
+                FetchExternalResources: [ 'script' ]
+                ProcessExternalResources: [ 'script' ]
+                MutationEvents: '2.0'
+            parsingMode: 'auto')
+
+        sourceTemplateAdmotion = jsdom.jsdom(htmlSourceAdmotion,
+            features:
+                FetchExternalResources: [ 'script' ]
+                ProcessExternalResources: [ 'script' ]
+                MutationEvents: '2.0'
+            parsingMode: 'auto')
 
 
-        # fsExtra.copy pathURL, "#{destAdserver}/custom/images/", (err) ->
-        #     if err
-        #         return console.error(err)
-        #     console.log 'success! imgs'
-        #     filePath = "#{destAdserver}/custom/images/index.html"
-        #     fs.unlinkSync filePath
-        # #remove HTML
-        # return
+        
 
-    
+        jsdom.jQueryify sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', ->
+            #console.log('1');
+            $ = sourceTemplate.defaultView.$
+            contentBanner = $('#page1').parent().html()
+            cssBanner = $('style').each((el,data) ->
+        
+                # console.log cssbanner
+                # console.log(cssBannerDataReplace);
+                cssBannerData = $(data).html();    
+                # console.log cssBannerData
+                # cssBannerFind = '.gwd-play-animation'
+                # cssBannerRegx = new RegExp(cssBannerFind,'g')
+                # cssBannerDataReplace = cssBannerData.replace(cssBannerRegx, '')
+                # cssBanner = $(this).html().replaceAll('.gwd-play-animation', '')
+                # cssBanner = $(data).html();
+                # console.log(cssBannerDataReplace);
+                # console.log(cssBanner);
+                return 
+
+            )
             
+            fnc = ((css, banner) ->
+                ->
+                  #console.log('2');
+                    $ = sourceTemplateAdmotion.defaultView.$
+                    contentBannerAdmotion = $('#Creativity')
+                    headerAdmotion = $('head');
+                    # console.log(css,banner);
+                  
+                    headerAdmotion.append(cssBanner);
+
+                    contentBannerAdmotion.prepend contentBanner
+                    # replaceCss = $('style').each((el,data) ->
+                    #     cssData = $(data)
+                    # )
+                    replaceCss = $('style').each((index, data) ->
+                        tagCss = $(data)
+                        $(this).html().replace('.gwd-play-animation','')
+                        for tagCss in '.gwd-play-animation'
+                            find = '.gwd-play-animation'
+                            regExp = new RegExp(find, 'g')
+                            str = tagCss.replace(regExp, '')
+                            
+                            
+                            console.log str
+                            # console.log $(this).html().replace('.gwd-play-animation','');
+                           
+                        
+                        # console.log text
+                                
+                                                    
+                        # $(this).text(text.replace('.gwd-play-animation', '')); 
+                        # console.log replaceCss
+                    )
+                        
+
+                    replaceImg = $('img[is="gwd-image"]').each((index, data) ->
+                        tag = $(data)
+                        source = tag.attr('source')
+                        tag.removeAttr 'is'
+                        tag.removeAttr 'source'
+                        tag.attr 'src', 'custom/images/' + source
+                        # console.log('index '+ index,'data'+ data);
+                        console.log tag[0].outerHTML
+                        
+                    )
+                  
+                    fs.writeFile 'output/admotion/index.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
+                        if err
+                            throw err
+                        console.log 'Template Convertido com sucesso.'
+                        return
+                    return
+            )(cssBanner, contentBanner)
+            jsdom.jQueryify sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc
+        return
     console.log destAdserver
     
-    # htmlSource = fs.readFileSync(pathURL + '/index.html', 'utf8')
-    # htmlSourceAdmotion = fs.readFileSync(destAdserver+'/index.html', 'utf8')
-
-    # sourceTemplate = jsdom.jsdom(htmlSource,
-    #     features:
-    #         FetchExternalResources: [ 'script' ]
-    #         ProcessExternalResources: [ 'script' ]
-    #         MutationEvents: '2.0'
-    #     parsingMode: 'auto')
-
-    # sourceTemplateAdmotion = jsdom.jsdom(htmlSourceAdmotion,
-    #     features:
-    #         FetchExternalResources: [ 'script' ]
-    #         ProcessExternalResources: [ 'script' ]
-    #         MutationEvents: '2.0'
-    #     parsingMode: 'auto')
-
     
-
-    # jsdom.jQueryify sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', ->
-    #     #console.log('1');
-    #     $ = sourceTemplate.defaultView.$
-    #     contentBanner = $('#page1').parent().html()
-    #     cssBanner = $('style').each((el,data) ->
-    
-    #         # console.log 'cssbanner'
-    #         # console.log(cssBannerDataReplace);
-    #         # cssBannerData = $(data).html();    
-    #         # cssBannerFind = '.gwd-play-animation'
-    #         # cssBannerRegx = new RegExp(cssBannerFind,'g')
-    #         # cssBannerDataReplace = cssBannerData.replace(cssBannerRegx, '')
-    #         # cssBanner = $(this).html().replaceAll('.gwd-play-animation', '')
-    #         # cssBanner = $(data).html();
-    #         # console.log(cssBannerDataReplace);
-    #         # console.log(cssBanner);
-    #         return 
-
-    #     )
-    #     fnc = ((css, banner) ->
-    #         ->
-    #           #console.log('2');
-    #             $ = sourceTemplateAdmotion.defaultView.$
-    #             contentBannerAdmotion = $('#Creativity')
-    #             headerAdmotion = $('head');
-    #             console.log(css,banner);
-              
-    #             headerAdmotion.append(cssBanner);
-
-    #             contentBannerAdmotion.prepend contentBanner
-    #             replaceImg = $('img').each((index, data) ->
-    #                 tag = $(data)
-    #                 source = tag.attr('source')
-    #                 tag.removeAttr 'is'
-    #                 tag.removeAttr 'source'
-    #                 tag.attr 'src', 'custom/images/' + source
-    #                 # console.log('index '+ index,'data'+ data);
-    #                 console.log tag[0].outerHTML
-    #                 return
-    #             )
-    #           # console.log(headerAdmotion.html())
-    #           # var str = '<img is="gwd-image" source="';
-    #           # var replace = str.replace('<img is="gwd-image" source="','<img src="');
-    #           # console.log("##" + replace);
-    #           # console.log(contentBannerAdmotion.html());
-    #             fs.writeFile 'templates/admotion/970x90/convertido.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
-    #                 if err
-    #                     throw err
-    #                 console.log 'Template Convertido com sucesso.'
-    #                 return
-    #             return
-    #     )(cssBanner, contentBanner)
-    #     jsdom.jQueryify sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc
-    #     return
 setPath()
 
 

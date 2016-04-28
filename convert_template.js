@@ -15,50 +15,107 @@ glob = require('glob');
 
 setPath = function() {
   var adServer, pathURL;
-  pathURL = 'C:/Users/costaan/Documents/GitHub/ConvertTemplates/templates/pecas_conversao/300x250';
+  pathURL = './templates/pecas_conversao/300x250';
   adServer = 'admotion';
-  return startConvert(pathURL, adServer);
+  startConvert(pathURL, adServer);
 };
 
 startConvert = function(pathURL, adServer) {
   var destAdserver, srcAdserver;
-  if (adServer === 'admotion') {
-    srcAdserver = 'templates/Admotion/Banner';
-    destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/" + adServer;
-  }
-  if (adServer === 'atlas') {
-    srcAdserver = 'templates/atlas';
-    destAdserver = pathURL + '\\' + adServer;
+  switch (adServer) {
+    case 'admotion':
+      srcAdserver = 'templates/Admotion/Banner';
+      destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/" + adServer;
+      break;
+    case 'atlas':
+      srcAdserver = 'templates/atlas';
+      destAdserver = pathURL + '\\' + adServer;
   }
   fsExtra.copy(srcAdserver, destAdserver, function(err) {
-    var extension, i, len, ref, results;
+    var extension, htmlSource, htmlSourceAdmotion, i, len, ref, sourceTemplate, sourceTemplateAdmotion;
     if (err) {
       return console.error(err);
     }
     console.log('success! paste');
     ref = ['*.jpg', '*.png', '*.gif'];
-    results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       extension = ref[i];
-      results.push(glob(pathURL + "/" + extension, null, function(err, files) {
-        var file, j, len1, results1;
+      glob(pathURL + "/" + extension, null, function(err, files) {
+        var file, j, len1, results;
         if (err) {
           return console.error(err);
         }
-        results1 = [];
+        results = [];
         for (j = 0, len1 = files.length; j < len1; j++) {
           file = files[j];
           console.log(file);
-          results1.push(fsExtra.copy(file, destAdserver + "/custom/images/" + (path.basename(file)), function(err) {
+          results.push(fsExtra.copy(file, destAdserver + "/custom/images/" + (path.basename(file)), function(err) {
             if (err) {
               return console.error(err);
             }
           }));
         }
-        return results1;
-      }));
+        return results;
+      });
     }
-    return results;
+    htmlSource = fs.readFileSync(pathURL + "/index.html", 'utf8');
+    htmlSourceAdmotion = fs.readFileSync(destAdserver + "/index.html", 'utf8');
+    sourceTemplate = jsdom.jsdom(htmlSource, {
+      features: {
+        FetchExternalResources: ['script'],
+        ProcessExternalResources: ['script'],
+        MutationEvents: '2.0'
+      },
+      parsingMode: 'auto'
+    });
+    sourceTemplateAdmotion = jsdom.jsdom(htmlSourceAdmotion, {
+      features: {
+        FetchExternalResources: ['script'],
+        ProcessExternalResources: ['script'],
+        MutationEvents: '2.0'
+      },
+      parsingMode: 'auto'
+    });
+    jsdom.jQueryify(sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', function() {
+      var $, contentBanner, cssBanner, fnc;
+      $ = sourceTemplate.defaultView.$;
+      contentBanner = $('#page1').parent().html();
+      cssBanner = $('style').each(function(el, data) {
+        var cssBannerData;
+        cssBannerData = $(data).html();
+      });
+      fnc = (function(css, banner) {
+        return function() {
+          var contentBannerAdmotion, headerAdmotion, replaceCss, replaceImg;
+          $ = sourceTemplateAdmotion.defaultView.$;
+          contentBannerAdmotion = $('#Creativity');
+          headerAdmotion = $('head');
+          headerAdmotion.append(cssBanner);
+          contentBannerAdmotion.prepend(contentBanner);
+          replaceCss = $('style').each(function(index, data) {
+            var tagCss;
+            tagCss = $(data);
+            return console.log(tagCss);
+          });
+          replaceImg = $('img[is="gwd-image"]').each(function(index, data) {
+            var source, tag;
+            tag = $(data);
+            source = tag.attr('source');
+            tag.removeAttr('is');
+            tag.removeAttr('source');
+            tag.attr('src', 'custom/images/' + source);
+            return console.log(tag[0].outerHTML);
+          });
+          fs.writeFile('output/admotion/index.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
+            if (err) {
+              throw err;
+            }
+            console.log('Template Convertido com sucesso.');
+          });
+        };
+      })(cssBanner, contentBanner);
+      return jsdom.jQueryify(sourceTemplateAdmotion.defaultView, 'http://code.jquery.com/jquery.js', fnc);
+    });
   });
   return console.log(destAdserver);
 };
