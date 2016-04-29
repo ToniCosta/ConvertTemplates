@@ -14,10 +14,10 @@ path = require('path');
 glob = require('glob');
 
 setPath = function() {
-  var adServer, pathURL;
-  pathURL = './templates/pecas_conversao/300x250';
-  adServer = 'admotion';
-  startConvert(pathURL, adServer);
+  prompt.start();
+  prompt.get(['PATHURL', 'AdServer'], function(err, result) {
+    startConvert(result.PATHURL, result.AdServer);
+  });
 };
 
 startConvert = function(pathURL, adServer) {
@@ -25,7 +25,7 @@ startConvert = function(pathURL, adServer) {
   switch (adServer) {
     case 'admotion':
       srcAdserver = 'templates/Admotion/Banner';
-      destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/" + adServer;
+      destAdserver = pathURL + "/" + adServer;
       break;
     case 'atlas':
       srcAdserver = 'templates/atlas';
@@ -99,7 +99,7 @@ startConvert = function(pathURL, adServer) {
             tag.attr('src', 'custom/images/' + source);
             return console.log(tag[0].outerHTML);
           });
-          fs.writeFile('output/admotion/index.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
+          fs.writeFile(destAdserver + "/index.html", '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
             if (err) {
               throw err;
             }

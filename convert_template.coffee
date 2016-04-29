@@ -11,35 +11,25 @@ glob = require('glob')
 
 setPath = ->
     
-    # prompt.start();
+    prompt.start();
 
-    # prompt.get(['PATHURL','AdServer'], (err, result) ->
-    #     # console.log(result.AdServer)
-    #     startConvert(result.PATHURL, result.AdServer)
-    #     return
+    prompt.get(['PATHURL','AdServer'], (err, result) ->
+        # console.log(result.AdServer)
+        startConvert(result.PATHURL, result.AdServer)
+        return
     
-    # )
-    pathURL = './templates/pecas_conversao/300x250'
-    adServer = 'admotion'
+    )
+    ####### Diretorio e Adserver automatico para desenvolvimento ######
+    # pathURL = './templates/pecas_conversao/300x250'
+    # adServer = 'admotion'
 
-    startConvert(pathURL, adServer)
+    # startConvert(pathURL, adServer)
     return
 
 startConvert = (pathURL, adServer) ->
     switch adServer
-        when 'admotion' then srcAdserver = 'templates/Admotion/Banner'; destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/#{adServer}"
+        when 'admotion' then srcAdserver = 'templates/Admotion/Banner'; destAdserver = "#{pathURL}/#{adServer}"
         when 'atlas' then srcAdserver = 'templates/atlas'; destAdserver = pathURL+'\\'+adServer
-        
-  
-    # if (adServer == 'admotion')
-    #     srcAdserver = 'templates/Admotion/Banner'
-    #     destAdserver = "C:/Users/costaan/Documents/GitHub/ConvertTemplates/output/#{adServer}"
-    #     # console.log('admotion')
-    # if (adServer == 'atlas')
-    #     srcAdserver = 'templates/atlas'
-    #     destAdserver = pathURL+'\\'+adServer
-
-        # console.log('atlas')
 
     fsExtra.copy srcAdserver, destAdserver, (err) ->
         if err
@@ -75,19 +65,15 @@ startConvert = (pathURL, adServer) ->
             parsingMode: 'auto')
 
         jsdom.jQueryify sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', ->
-            #console.log('1');
             $ = sourceTemplate.defaultView.$
             contentBanner = $('#page1').parent().html()
             cssBanner = $('style')
             
             fnc = ((css, banner) ->
                 ->
-                  #console.log('2');
                     $ = sourceTemplateAdmotion.defaultView.$
                     contentBannerAdmotion = $('#Creativity')
                     headerAdmotion = $('head');
-                    # console.log(css,banner);
-                  
                     headerAdmotion.append(cssBanner);
 
                     contentBannerAdmotion.prepend contentBanner
@@ -99,12 +85,11 @@ startConvert = (pathURL, adServer) ->
                         tag.removeAttr 'id'
                         tag.removeAttr 'source'
                         tag.attr 'src', 'custom/images/' + source
-                        # console.log('index '+ index,'data'+ data);
                         console.log tag[0].outerHTML
                         
                     )
                   
-                    fs.writeFile 'output/admotion/index.html', '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
+                    fs.writeFile "#{destAdserver}/index.html", '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
                         if err
                             throw err
                         console.log 'Template Convertido com sucesso.'
