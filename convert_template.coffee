@@ -29,7 +29,7 @@ setPath = ->
 startConvert = (pathURL, adServer) ->
     switch adServer
         when 'admotion' then srcAdserver = 'templates/Admotion/Banner'; destAdserver = "#{pathURL}/#{adServer}"
-        when 'atlas' then srcAdserver = 'templates/atlas'; destAdserver = pathURL+'\\'+adServer
+        when 'atlas' then srcAdserver = 'templates/atlas'; destAdserver = "#{pathURL}/#{adServer}"
 
     fsExtra.copy srcAdserver, destAdserver, (err) ->
         if err

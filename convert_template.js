@@ -29,7 +29,7 @@ startConvert = function(pathURL, adServer) {
       break;
     case 'atlas':
       srcAdserver = 'templates/atlas';
-      destAdserver = pathURL + '\\' + adServer;
+      destAdserver = pathURL + "/" + adServer;
   }
   return fsExtra.copy(srcAdserver, destAdserver, function(err) {
     var extension, htmlSource, htmlSourceAdmotion, i, len, ref, sourceTemplate, sourceTemplateAdmotion;
