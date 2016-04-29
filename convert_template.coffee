@@ -67,13 +67,35 @@ startConvert = (pathURL, adServer) ->
         jsdom.jQueryify sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', ->
             $ = sourceTemplate.defaultView.$
             contentBanner = $('#page1').parent().html()
+            creativityWidth = $('#page1').attr('data-gwd-width')
+            creativityHeight = $('#page1').attr('data-gwd-height')
+            console.log creativityWidth
             cssBanner = $('style')
             
             fnc = ((css, banner) ->
                 ->
                     $ = sourceTemplateAdmotion.defaultView.$
                     contentBannerAdmotion = $('#Creativity')
-                    headerAdmotion = $('head');
+                    headerAdmotion = $('head')
+                    bodyAdmotion = $('body')
+                    bannerDimensions = $('#bannerDimensions')
+                    bannerDimensions.html('
+                        var adConfig = {};
+                        adConfig.creativityWidth = "'+"#{creativityWidth}"+'";
+                        adConfig.creativityHeight = "'+"#{creativityHeight}"+'";
+                    ')
+                    bannerDimensions.removeAttr 'id'
+                    bodyAdmotion.append('
+                        <script>
+                        window.onload = function(){
+                            var bannerOutput = document.getElementById("page1");
+                            bannerOutput.firstElementChild.className += " gwd-play-animation";
+
+                        }
+                            
+                        </script>
+                    ')
+                    
                     headerAdmotion.append(cssBanner);
 
                     contentBannerAdmotion.prepend contentBanner
@@ -88,6 +110,8 @@ startConvert = (pathURL, adServer) ->
                         console.log tag[0].outerHTML
                         
                     )
+                    removeScript = $('.jsdom')
+                    removeScript.remove()
                   
                     fs.writeFile "#{destAdserver}/index.html", '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', (err) ->
                         if err
@@ -100,5 +124,3 @@ startConvert = (pathURL, adServer) ->
         return
       
 setPath()
-
-

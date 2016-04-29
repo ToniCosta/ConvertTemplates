@@ -77,16 +77,24 @@ startConvert = function(pathURL, adServer) {
       parsingMode: 'auto'
     });
     jsdom.jQueryify(sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', function() {
-      var $, contentBanner, cssBanner, fnc;
+      var $, contentBanner, creativityHeight, creativityWidth, cssBanner, fnc;
       $ = sourceTemplate.defaultView.$;
       contentBanner = $('#page1').parent().html();
+      creativityWidth = $('#page1').attr('data-gwd-width');
+      creativityHeight = $('#page1').attr('data-gwd-height');
+      console.log(creativityWidth);
       cssBanner = $('style');
       fnc = (function(css, banner) {
         return function() {
-          var contentBannerAdmotion, headerAdmotion, replaceImg;
+          var bannerDimensions, bodyAdmotion, contentBannerAdmotion, headerAdmotion, removeScript, replaceImg;
           $ = sourceTemplateAdmotion.defaultView.$;
           contentBannerAdmotion = $('#Creativity');
           headerAdmotion = $('head');
+          bodyAdmotion = $('body');
+          bannerDimensions = $('#bannerDimensions');
+          bannerDimensions.html('var adConfig = {}; adConfig.creativityWidth = "' + ("" + creativityWidth) + '"; adConfig.creativityHeight = "' + ("" + creativityHeight) + '";');
+          bannerDimensions.removeAttr('id');
+          bodyAdmotion.append('<script> window.onload = function(){ var bannerOutput = document.getElementById("page1"); bannerOutput.firstElementChild.className += " gwd-play-animation"; } </script>');
           headerAdmotion.append(cssBanner);
           contentBannerAdmotion.prepend(contentBanner);
           replaceImg = $('img[is="gwd-image"]').each(function(index, data) {
@@ -99,6 +107,8 @@ startConvert = function(pathURL, adServer) {
             tag.attr('src', 'custom/images/' + source);
             return console.log(tag[0].outerHTML);
           });
+          removeScript = $('.jsdom');
+          removeScript.remove();
           fs.writeFile(destAdserver + "/index.html", '<html>' + contentBannerAdmotion.parents('html').html() + '</html>', function(err) {
             if (err) {
               throw err;
