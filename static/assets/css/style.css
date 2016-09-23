@@ -6,139 +6,229 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 			    font-size: 100%;
 			    vertical-align: baseline;
 			}
-			html {
-			    line-height: 1;
-			}
-			ol, ul {
-			    list-style: none;
-			}
-			table {
-			    border-collapse: collapse;
-			    border-spacing: 0;
-			}
-			caption, th, td {
-			    text-align: left;
-			    font-weight: normal;
-			    vertical-align: middle;
-			}
-			q, blockquote {
-			    quotes: none;
-			}
-			q:before, q:after, blockquote:before, blockquote:after {
-			    content: "";
-			    content: none;
-			}
-			a img {
-			    border: none;
-			}
-			article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
-			    display: block;
-			}
+html {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+    vertical-align: middle;
+}
+q, blockquote {
+    quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+    content: "";
+    content: none;
+}
+a img {
+    border: none;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+    display: block;
+}
 
-			* {
-			    box-sizing: border-box;
-			    -moz-box-sizing: border-box;
-			    -ms-box-sizing: border-box;
-			    -o-box-sizing: border-box;
-			    -webkit-box-sizing: border-box;
-			}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
 
-			body{				
-			    font-family: benton-sans,"Helvetica Neue",helvetica,arial,sans-serif;
-			    font-size: .875rem;
-			    line-height: 1.5rem;
-			    color: #40444f;
-			}
+body{				
+    font-family: "Helvetica Neue",helvetica,arial,sans-serif;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    color: #40444f;
+}
 
-			header{
-				overflow: hidden;
-			    background: -webkit-linear-gradient(top, #664a86,#534292);
-			    background: -moz-linear-gradient(top, #664a86,#534292);
-			    background: -o-linear-gradient(top, #664a86,#534292);
-			    background: -ms-linear-gradient(top, #664a86,#534292);
-			    background: linear-gradient(to bottom,#664a86,#534292);
-			}
-			header nav {
-			    position: relative;
-			    z-index: 4;
-			    display: block;
-			    padding: 0;
-			    background-image: linear-gradient(to bottom,#664a86,rgba(102,74,134,0)),linear-gradient(to bottom,rgba(255,255,255,0) 0,rgba(255,255,255,.04) 100%);
-			    border: 0 solid #79589F;
-			    border-width: .0625rem 0;
-			}
-			header nav ul {
-			    max-width: 62rem;
-			    margin: 0 auto;
-			    padding: 0;
-			    list-style: none;
-			    overflow: hidden;
-			}
-			header nav ul li {
-			    display: inline;
-			}
-			header nav ul li a {
-			    display: inline-block;
-			    padding: 1.05rem 1rem .95rem;
-			    line-height: .95rem;
-			    color: #fff;
-			    font-size: .85rem;
-			    -webkit-transition: background-color 0.15s ease-out;
-			    -moz-transition: background-color 0.15s ease-out;
-			    -o-transition: background-color 0.15s ease-out;
-			    -ms-transition: background-color 0.15s ease-out;
-			    transition: background-color 0.15s ease-out;
-			    text-decoration:none;
-			}
-			header nav ul li a:hover{background-color:#79589F}
-			section.upload {
-			    position: relative;
-			    -webkit-box-sizing: border-box;
-			    -moz-box-sizing: border-box;
-			    box-sizing: border-box;
-			    max-width: 60rem;
-			    margin: 0 auto;
-			    padding: 3rem 1rem 3.5rem;
-			}
-			section.upload p{
-				text-align: center;
-			}
-			section.upload section.target {
-			    position: relative;
-			    z-index: 6;
-			    width: 34rem;
-			    height: auto;
-			    margin: 0 auto;
-			    padding: 0 0 1rem;
-			    color: rgba(255,255,255,.5);
-			    background: rgba(0,0,0,.05);
-			    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
-			    border: .125rem dashed rgba(255,255,255,.15);
-			    -webkit-border-radius: .9375rem;
-			    border-radius: .9375rem;
-			    cursor: pointer;
-			    -webkit-transition: color 0.2s ease-out, border-color 0.2s ease-out;
-			    -moz-transition: color 0.2s ease-out, border-color 0.2s ease-out;
-			    -o-transition: color 0.2s ease-out, border-color 0.2s ease-out;
-			    -ms-transition: color 0.2s ease-out, border-color 0.2s ease-out;
-			    transition: color 0.2s ease-out, border-color 0.2s ease-out;
-			}
-			section.upload section.target:hover{color:rgba(255,255,255,.2);border-color:rgba(0,0,0,.05)}
-			section.upload input[type="file"]{ position: absolute; opacity: 0; top:-69px; }
-			section.upload section.target figure.icon {
-			    width: 55px;
-			    height: 68px;
-			    background: url(../images/logo_convert.png);
-			    
-			    display: block;
-			    margin: 10px auto;
-			}
-			[draggable] {
-			  -moz-user-select: none;
-			  -khtml-user-select: none;
-			  -webkit-user-select: none;
-			  user-select: none;
-			  /* Required to make elements draggable in old WebKit */
-			  -khtml-user-drag: element;
-			  -webkit-user-drag: element;
-			}
+header{
+	/*overflow: hidden;*/
+    background: -webkit-linear-gradient(top, #664a86,#534292);
+    background: -moz-linear-gradient(top, #664a86,#534292);
+    background: -o-linear-gradient(top, #664a86,#534292);
+    background: -ms-linear-gradient(top, #664a86,#534292);
+    background: linear-gradient(to bottom,#664a86,#534292);
+}
+header nav {
+    position: relative;
+    z-index: 4;
+    display: block;
+    padding: 0;
+    background-image: linear-gradient(to bottom,#664a86,rgba(102,74,134,0)),linear-gradient(to bottom,rgba(255,255,255,0) 0,rgba(255,255,255,.04) 100%);
+    border: 0 solid #79589F;
+    border-width: .0625rem 0;
+}
+header nav ul {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+header nav ul li {
+    display: inline;
+}
+header nav ul li a {
+    display: inline-block;
+    padding: 1.05rem 1rem .95rem;
+    line-height: .95rem;
+    color: #fff;
+    font-size: .85rem;
+    -webkit-transition: background-color 0.15s ease-out;
+    -moz-transition: background-color 0.15s ease-out;
+    -o-transition: background-color 0.15s ease-out;
+    -ms-transition: background-color 0.15s ease-out;
+    transition: background-color 0.15s ease-out;
+    text-decoration:none;
+}
+header nav ul li a:hover{background-color:#79589F}
+section.upload {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 3rem 1rem 3.5rem;
+}
+section.upload p{
+	text-align: center;
+}
+section.upload section.target {
+    position: relative;
+    z-index: 6;
+    width: 34rem;
+    height: auto;
+    margin: 0 auto;
+    padding: 0 0 1rem;
+    color: rgba(255,255,255,.2);
+    background: rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+    border: .125rem dashed rgba(0,0,0,.05);
+    -webkit-border-radius: .9375rem;
+    border-radius: .9375rem;
+    cursor: pointer;
+    -webkit-transition: color 0.2s ease-out, border-color 0.2s ease-out;
+    -moz-transition: color 0.2s ease-out, border-color 0.2s ease-out;
+    -o-transition: color 0.2s ease-out, border-color 0.2s ease-out;
+    -ms-transition: color 0.2s ease-out, border-color 0.2s ease-out;
+    transition: color 0.2s ease-out, border-color 0.2s ease-out;
+}
+section.upload section.target:hover{color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)}
+section.upload input[type="file"]{ position: absolute; opacity: 0; top:-69px; }
+section.upload section.target figure.icon {
+    width: 55px;
+    height: 68px;
+    background: url(../images/logo_convert.png);
+    opacity: 0.5;
+    display: block;
+    margin: 10px auto;
+}
+section.upload section.target:hover figure.icon {
+    opacity: 1;
+}
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+.modal{
+	background: #fff;
+	border: .125rem solid rgba(0,0,0,.15);
+    -webkit-border-radius: .9375rem;
+    border-radius: .9375rem;
+	border-radius: 8px;
+	
+	top: 20%;
+	left: 50%;
+	margin-left: -275px;
+	text-align: center;
+	padding: 10px;
+	position: absolute;
+	width: 550px;
+	z-index: 7;
+
+}
+.modal .left{
+    float: left;
+    width: 50%;
+}
+
+.modal h2{
+	font-size: 18px;
+	color: #534292;
+	text-align: center;
+
+}
+.modal input[type="radio"]{
+	display: inline-block;
+	width: 20px;
+	font-size: 14px;
+	float: left;
+}
+.modal .fechar{
+	display: block;
+	cursor: pointer;
+	position: absolute;
+	top: -15px;
+	right: -15px;
+	background: #534292;
+	color: #fff;
+	border-radius: 15px;
+	width: 30px;
+	height: 30px;
+	line-height: 26px;
+	border: 2px solid #fff;
+}
+#modalCompressImg{
+	display: none;
+}
+
+#modalCompressImg ul{
+	width: 200px;
+	margin: 20px auto;
+}
+#modalCompressImg ul li{
+	float: left;
+}
+.modal #download{
+	background: #534292;
+	display: inline-block;
+	font-size: 14px;
+	color: #fff;
+	cursor: pointer;
+	padding: 5px;
+	margin-top: 20px;
+	text-transform: uppercase;
+	text-decoration: none;
+
+}
+.modal #download:hover{
+	background: #664a86;
+ 	transition: background .2s linear;
+}
+#modalTemplate{
+	display: none;
+}
+#modalTemplate label{
+    width: 76%;
+    text-align: right;
+    float: left;
+}
+#modalTemplate input[type="checkbox"]{
+    float: left;
+    margin-left: 10px;
+}

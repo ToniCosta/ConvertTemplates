@@ -3,7 +3,8 @@ home = new homeController
 
 class Route
 	constructor: (app) ->
-		app.get '/api', home.get
+		app.post '/api', home.post
+
 
 
 module.exports = Route

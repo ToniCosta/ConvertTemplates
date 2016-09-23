@@ -7,15 +7,17 @@ ToolBox = (function() {
   }
 
   ToolBox.prototype.method1 = function() {
-    return console.log('toolbox method1');
+    console.log('toolbox method1');
   };
 
-  ToolBox.prototype.methdo2 = function() {
-    return console.log('toolbox method2');
+  ToolBox.prototype.method2 = function() {
+    console.log('toolbox method2');
   };
 
   return ToolBox;
 
 })();
+
+return;
 
 module.exports = ToolBox;

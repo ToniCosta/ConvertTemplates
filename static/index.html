@@ -23,17 +23,97 @@
 	    	</nav>
 	    	
 	    	<section class="upload">
-	    		
+	    		<form id="form" action="/api" enctype="multipart/form-data" method="post">
+	    		<div id="modalCompressImg" class="modal">
+					<h2>Selecione o nivel de compressão</h2>
+					<ul>
+						<li>
+							<input type="radio" name="gender" value="baixa"> Baixa
+						</li>
+						<li>
+							<input type="radio" name="gender" value="media"> Média
+						</li>
+						<li>
+							<input type="radio" name="gender" value="Alta"> Alta
+						</li>
+					</ul>
+					<br style="clear:both;">
+					<a id="download" title="Download">Download</a>
+					<a id="fechar" title="Fechar" class="fechar">X</a>
+				</div>
+				<div id="modalTemplate" class="modal">
+					<h2>Selecione abaixo o veículo:</h2>
+					<div class="left">
+							<label>HTML LIMPO</label>
+							<input type="checkbox" name="vehicle" value="HTML LIMPO"><br>
+							<label>ABRIL</label>
+							<input type="checkbox" name="vehicle" value="ABRIL"><br>
+							<label>ATLAS</label>
+							<input type="checkbox" name="vehicle" value="ATLAS"><br>
+							<label>BUSCAPÉ</label>
+							<input type="checkbox" name="vehicle" value="BUSCAPÉ"><br>
+							<label>CBN</label>
+							<input type="checkbox" name="vehicle" value="CBN"><br>
+							<label>DBM/DCM</label>
+							<input type="checkbox" name="vehicle" value="DBM/DCM"><br>
+							<label>GDN/ADWORD</label>
+							<input type="checkbox" name="vehicle" value="GDN/ADWORD"><br>
+							<label>DoubleClick Studio Banner</label>
+							<input type="checkbox" name="vehicle" value="DoubleClick Studio Banner"><br>
+							<label>DoubleClick Studio Expansível</label>
+							<input type="checkbox" name="vehicle" value="DoubleClick Studio Expansível"><br>
+							<label>ESTADÃO</label>
+							<input type="checkbox" name="vehicle" value="ESTADÃO"><br>
+							<label>GLOBO</label>
+							<input type="checkbox" name="vehicle" value="GLOBO"><br>
+						
+					</div>
+					<div class="left">
+							
+							<label>IG</label>
+							<input type="checkbox" name="vehicle" value="IG"><br>
+							<label>INFOMONEY</label>
+							<input type="checkbox" name="vehicle" value="INFOMONEY"><br>
+							<label>MERCADO LIVRE</label>
+							<input type="checkbox" name="vehicle" value="MERCADO LIVRE"><br>
+							<label>MERCADO&EVENTOS</label>
+							<input type="checkbox" name="vehicle" value="MERCADO&EVENTOS"><br>
+							<label>MSN</label>
+							<input type="checkbox" name="vehicle" value="MSN"><br>
+							<label>R7</label>
+							<input type="checkbox" name="vehicle" value="R7"><br>
+							<label>SMARTCLIP</label>
+							<input type="checkbox" name="vehicle" value="SMARTCLIP"><br>
+							<label>SOCIOMANTIC</label>
+							<input type="checkbox" name="vehicle" value="SOCIOMANTIC"><br>
+							<label>TECHMUNDO</label>
+							<input type="checkbox" name="vehicle" value="TECHMUNDO"><br>
+							<label>TERRA</label>
+							<input type="checkbox" name="vehicle" value="TERRA"><br>
+							<label>UOL</label>
+							<input type="checkbox" name="vehicle" value="UOL"><br>
+						
+					</div>
+					<a id="download" title="Download">Download</a>
+					<a id="fecharHTML" title="Fechar" class="fechar">X</a>
+				</div>
 	    		<section class="target">
 	    			<figure class="icon"></figure>
 	    			<p>Arraste seus arquivos aqui!</p>
 	    			<p class="pathURL"></p>
 	    			
 	    		</section>
-    			<input id="file" type="file" multiple="">
+	    		
+    				<input id="file" type="file" name="files" multiple="">
+
+    			</form>
+    			
+				
+			
 	    		   				
 	    	</section>
 	    </header>
 		<script type="text/javascript" src="assets/js/home.js"></script>
+		
 	</body>
 </html>
