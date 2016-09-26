@@ -143,10 +143,16 @@ createXMLHTTPObject = ->
 	xmlhttp
 
 handleRequest = (req) ->
-	writeroot = document.getElementsByClassName('pathURL');
-	writeroot.innerHTML = req.responseText
-	sendRequest 'index.html', handleRequest
+	writeroot = document.getElementById('progress-bar');
+	writeroot.textContent = req.responseText
+	
 	return
 
+sendRequest '/api', handleRequest
 window.onload = ->
 	cancelSubmit()
+	document.getElementById('progress-bar').textContent = '0%'
+	document.getElementById('progress-bar').style.width = '0%'
+
+	return
+

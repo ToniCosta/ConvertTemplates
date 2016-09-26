@@ -11,7 +11,20 @@ Home = (function() {
   }
 
   Home.prototype.post = function(req, res) {
-    return res.writeHead(200);
+    res.writeHead(200);
+    return fs.readFile(req.files.files.path, function(err, data) {
+      var newPath;
+      console.log(data);
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send('File uploaded!');
+      }
+      newPath = __dirname + "/uploads/uploadedFileName";
+      return fs.writeFile(newPath, data, function(err) {
+        return res.end();
+      });
+    });
   };
 
   return Home;

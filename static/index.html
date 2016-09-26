@@ -24,6 +24,7 @@
 	    	
 	    	<section class="upload">
 	    		<form id="form" action="/api" enctype="multipart/form-data" method="post">
+
 	    		<div id="modalCompressImg" class="modal">
 					<h2>Selecione o nivel de compressão</h2>
 					<ul>
@@ -101,8 +102,12 @@
 	    			<figure class="icon"></figure>
 	    			<p>Arraste seus arquivos aqui!</p>
 	    			<p class="pathURL"></p>
+
 	    			
 	    		</section>
+	    		<div class="progress">
+	              <div id="progress-bar" role="progressbar" style="width: 78%;">78%</div>
+	            </div>
 	    		
     				<input id="file" type="file" name="files" multiple="">
 

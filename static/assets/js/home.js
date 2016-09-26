@@ -159,11 +159,14 @@ createXMLHTTPObject = function() {
 
 handleRequest = function(req) {
   var writeroot;
-  writeroot = document.getElementsByClassName('pathURL');
-  writeroot.innerHTML = req.responseText;
-  sendRequest('index.html', handleRequest);
+  writeroot = document.getElementById('progress-bar');
+  writeroot.textContent = req.responseText;
 };
 
+sendRequest('/api', handleRequest);
+
 window.onload = function() {
-  return cancelSubmit();
+  cancelSubmit();
+  document.getElementById('progress-bar').textContent = '0%';
+  document.getElementById('progress-bar').style.width = '0%';
 };
