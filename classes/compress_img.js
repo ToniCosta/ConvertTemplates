@@ -10,26 +10,27 @@ pngquant = require('imagemin-pngquant');
 CompressImg = (function() {
   function CompressImg() {}
 
-  CompressImg.prototype.startImagemin = function() {
+  CompressImg.prototype.startImagemin = function(quality) {
     var defaultQuality, highQuality, lowQuality, middleQuality;
     lowQuality = '5-15';
     middleQuality = '50-65';
     highQuality = '65-80';
     defaultQuality = '90-100';
-    switch (result.quality) {
+    console.log(quality);
+    switch (quality) {
       case 'low':
-        result.quality = lowQuality;
+        quality = lowQuality;
         break;
       case 'middle':
-        result.quality = middleQuality;
+        quality = middleQuality;
         break;
       case 'high':
-        result.quality = highQuality;
+        quality = highQuality;
         break;
       default:
-        result.quality = defaultQuality;
+        quality = defaultQuality;
     }
-    return gulp.src(callback + '/*').pipe(imagemin({
+    return gulp.src('./uploads/*').pipe(imagemin({
       progressive: true,
       svgoPlugins: [
         {
@@ -44,7 +45,7 @@ CompressImg = (function() {
           speed: 4
         })
       ]
-    })).pipe(gulp.dest(callback + '/compress'));
+    })).pipe(gulp.dest('./compress'));
   };
 
   return CompressImg;

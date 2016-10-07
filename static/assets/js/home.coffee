@@ -8,10 +8,6 @@ btnFechar = document.getElementById('fechar')
 btnFecharHTML = document.getElementById('fecharHTML')
 form = document.getElementById('form')
 
-cancelSubmit = ->
-	console.log 'cancel form'
-	return false
-	
 handleBtnFechar = ->
 	modalCompressImg.style.display = 'none';
 	modalTemplate.style.display = 'none';
@@ -30,10 +26,12 @@ handleFileSelect = (evt) ->
 		i++
 		if escape(f.type) == 'text/html'
 			console.log 'html'
+			$('.progress').show()
 			modalTemplate.style.display = 'block'
 			
 		else if escape(f.type) == 'image/jpeg' || escape(f.type) == 'image/png'
 			console.log 'images'
+			$('.progress').show()
 			modalCompressImg.style.display = 'block'
 			
 		pathURL.innerHTML = output.join('')
@@ -72,11 +70,13 @@ handleInputFile = (evt) ->
 		i++
 		if escape(f.type) == 'text/html'
 			console.log 'html'
+			$('.progress').show()
 			modalTemplate.style.display = 'block'
 			
 			
 		else if escape(f.type) == 'image/jpeg' || escape(f.type) == 'image/png'
 			console.log 'images'
+			$('.progress').show()
 			modalCompressImg.style.display = 'block'
 			
 		pathURL.innerHTML = output.join('')
@@ -89,70 +89,56 @@ target.addEventListener 'dragover', handleDragOver, false
 target.addEventListener 'drop', handleFileSelect, false
 btnFechar.addEventListener 'click', handleBtnFechar, false
 btnFecharHTML.addEventListener 'click', handleBtnFechar, false
-form.addEventListener 'submit', cancelSubmit
 
+$('.progress-bar').text('0%');
+$('.progress-bar').width('0%');
 
-XMLHttpFactories = [
-	->
-		new XMLHttpRequest
-	->
-		new ActiveXObject('Msxml2.XMLHTTP')
-	->
-		new ActiveXObject('Msxml3.XMLHTTP')
-	->
-		new ActiveXObject('Microsoft.XMLHTTP')
-]
-
-sendRequest = (url, callback, postData) ->
-	req = createXMLHTTPObject()
-	if !req
-		return
-	method = if postData then 'POST' else 'GET'
-	req.open method, url, true
-	# req.setRequestHeader 'User-Agent', 'XMLHTTP/1.0'
+$("input[name='gender']").on 'click', ->
 	
-	if postData
-		req.setRequestHeader 'Content-type', 'application/x-www-form-urlencoded'
+  path = $("input[name='gender']:checked").val()
+  console.log (path)
+  files = $('#file').get(0).files
+  if files.length > 0
+    # create a FormData object which will be sent as the data payload in the
+    # AJAX request
+    formData = new FormData
+    # loop through all the selected files and add them to the formData object
+    i = 0
+    while i < files.length
+      file = files[i]
+      # add the files to formData object for the data payload
+      formData.append 'files', file, file.name
+      i++
+    formData.append 'fields', path
+    $.ajax
+      url: '/api'
+      type: 'POST'
+      data: formData
+      processData: false
+      contentType: false
+      success: (data) ->
+        console.log 'upload sucess!\n' + data
+        return
+      xhr: ->
+        # create an XMLHttpRequest
+        xhr = new XMLHttpRequest
+        # listen to the 'progress' event
+        xhr.upload.addEventListener 'progress', ((evt) ->
+          if evt.lengthComputable
+            # calculate the percentage of upload completed
+            percentComplete = evt.loaded / evt.total
+            percentComplete = parseInt(percentComplete * 100)
+            # update the Bootstrap progress bar with the new percentage
+            $('.progress-bar').text percentComplete + '%'
+            $('.progress-bar').width percentComplete + '%'
+            # once the upload reaches 100%, set the progress bar text to done
+            # if percentComplete == 100
+            #   # $('.progress-bar').html 'Upload'
+              
+          return
+        ), false
+        xhr
+  return
 
-	req.onreadystatechange = ->
-	if req.readyState != 4
-		return
-	if req.status != 200 and req.status != 304
-		 # alert('HTTP error ' + req.status);
-		return
-	callback req
-	return
 
-	if req.readyState == 4
-		return
-	req.send postData
-	return
-
-createXMLHTTPObject = ->
-	xmlhttp = false
-	i = 0
-	while i < XMLHttpFactories.length
-		try
-			xmlhttp = XMLHttpFactories[i]()
-		catch e
-			i++
-			i++
-			continue
-		break
-		i++
-	xmlhttp
-
-handleRequest = (req) ->
-	writeroot = document.getElementById('progress-bar');
-	writeroot.textContent = req.responseText
-	
-	return
-
-sendRequest '/api', handleRequest
-window.onload = ->
-	cancelSubmit()
-	document.getElementById('progress-bar').textContent = '0%'
-	document.getElementById('progress-bar').style.width = '0%'
-
-	return
 

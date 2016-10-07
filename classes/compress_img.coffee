@@ -5,35 +5,31 @@ pngquant = require 'imagemin-pngquant'
 class CompressImg
 	constructor: ->
 	
-	startImagemin: ->
+	startImagemin: (quality) ->
 
 		lowQuality = '5-15'
 		middleQuality = '50-65'
 		highQuality = '65-80'
 		defaultQuality = '90-100'
-		
-		switch result.quality
+		console.log quality
+		switch quality
 			when 'low'
-				result.quality = lowQuality	
+				quality = lowQuality	
 			when 'middle'
-				result.quality = middleQuality
+				quality = middleQuality
 			when 'high'
-				result.quality = highQuality
+				quality = highQuality
 			else
-				result.quality = defaultQuality
+				quality = defaultQuality
 
-		return gulp.src(callback+'/*')
-		    .pipe(imagemin({
-		        progressive: true,
-		        svgoPlugins: [
-		            {removeViewBox: false},
-		            {cleanupIDs: false}
-		        ],
-		        use: [pngquant({quality: quality, speed: 4})]
-		    }))
-		    .pipe(gulp.dest(callback+'/compress'));
-		
-		
-
-
+		gulp.src('./uploads/*')
+			.pipe(imagemin({
+				progressive: true
+				svgoPlugins: [
+					{ removeViewBox: false }
+					{ cleanupIDs: false }
+				]
+				use: [ pngquant({quality: quality, speed: 4})
+				]})).pipe(gulp.dest('./compress'))
+	
 module.exports = CompressImg
