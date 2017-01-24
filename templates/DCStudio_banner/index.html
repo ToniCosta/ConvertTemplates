@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://s0.2mdn.net/ads/studio/Enabler.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+</head>
+<body>
+    
+	<a class="clickTagArea" id="clickTagArea"></a>
+      
+	<script>
+	    window.onload = function() {
+	        if (Enabler.isInitialized()) {
+	            enablerInitHandler();
+	        } else {
+	            Enabler.addEventListener(studio.events.StudioEvent.INIT, enablerInitHandler);
+	        }
+	    }
+	    function enablerInitHandler() {
+	    }
+	    function bgExitHandler(e) {
+	        Enabler.exitOverride("Exit URL", "http://www.estacio.br");
+	    }
+	    document.getElementById("clickTagArea").addEventListener("click", bgExitHandler, false);
+	</script>
+    
+</body>
+</html>

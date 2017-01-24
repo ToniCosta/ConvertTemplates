@@ -204,7 +204,7 @@ section.upload section.target:hover figure.icon {
 #modalCompressImg ul li{
 	float: left;
 }
-.modal #download{
+.modal #download, #generate{
 	background: #534292;
 	display: inline-block;
 	font-size: 14px;

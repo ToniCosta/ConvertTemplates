@@ -10,7 +10,7 @@ pngquant = require('imagemin-pngquant');
 CompressImg = (function() {
   function CompressImg() {}
 
-  CompressImg.prototype.startImagemin = function(quality) {
+  CompressImg.prototype.startImagemin = function(quality, uuid) {
     var defaultQuality, highQuality, lowQuality, middleQuality;
     lowQuality = '5-15';
     middleQuality = '50-65';
@@ -45,7 +45,7 @@ CompressImg = (function() {
           speed: 4
         })
       ]
-    })).pipe(gulp.dest('./compress'));
+    })).pipe(gulp.dest("./compress/" + uuid));
   };
 
   return CompressImg;

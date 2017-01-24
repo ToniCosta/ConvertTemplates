@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+<script>
+    function getParameters() {
+        var result = {};
+        location.search.substr(1).split("&").forEach(function (item) {
+            var tmp = item.split("=");
+            result[tmp[0]] = decodeURIComponent(tmp[1]);
+        });
+        return result;
+    }
+    var flashvars = getParameters();
+</script>
+</head>
+<body>
+    <a onClick="javascript:window.open(flashvars.oas,'_blank')" class="clickTagArea" id="clickTagArea"></a>
+</body>
+</html>

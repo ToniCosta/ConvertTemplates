@@ -70,14 +70,18 @@ handleInputFile = (evt) ->
 		i++
 		if escape(f.type) == 'text/html'
 			console.log 'html'
+			typeFile = f.type
 			$('.progress').show()
 			modalTemplate.style.display = 'block'
+			postFile(typeFile)
 			
 			
 		else if escape(f.type) == 'image/jpeg' || escape(f.type) == 'image/png'
 			console.log 'images'
+			typeFile = f.type
 			$('.progress').show()
 			modalCompressImg.style.display = 'block'
+			postFile(typeFile)
 			
 		pathURL.innerHTML = output.join('')
 
@@ -93,52 +97,107 @@ btnFecharHTML.addEventListener 'click', handleBtnFechar, false
 $('.progress-bar').text('0%');
 $('.progress-bar').width('0%');
 
-$("input[name='gender']").on 'click', ->
-	
-  path = $("input[name='gender']:checked").val()
-  console.log (path)
-  files = $('#file').get(0).files
-  if files.length > 0
-    # create a FormData object which will be sent as the data payload in the
-    # AJAX request
-    formData = new FormData
-    # loop through all the selected files and add them to the formData object
-    i = 0
-    while i < files.length
-      file = files[i]
-      # add the files to formData object for the data payload
-      formData.append 'files', file, file.name
-      i++
-    formData.append 'fields', path
-    $.ajax
-      url: '/api'
-      type: 'POST'
-      data: formData
-      processData: false
-      contentType: false
-      success: (data) ->
-        console.log 'upload sucess!\n' + data
-        return
-      xhr: ->
-        # create an XMLHttpRequest
-        xhr = new XMLHttpRequest
-        # listen to the 'progress' event
-        xhr.upload.addEventListener 'progress', ((evt) ->
-          if evt.lengthComputable
-            # calculate the percentage of upload completed
-            percentComplete = evt.loaded / evt.total
-            percentComplete = parseInt(percentComplete * 100)
-            # update the Bootstrap progress bar with the new percentage
-            $('.progress-bar').text percentComplete + '%'
-            $('.progress-bar').width percentComplete + '%'
-            # once the upload reaches 100%, set the progress bar text to done
-            # if percentComplete == 100
-            #   # $('.progress-bar').html 'Upload'
-              
-          return
-        ), false
-        xhr
-  return
+postFile = (typeFile) ->
+
+	$("input[name='gender']").on 'click', ->
+		
+	  path = $("input[name='gender']:checked").val()
+	  console.log (path)
+	  files = $('#file').get(0).files
+	  console.log (files)
+	  if files.length > 0
+	    # create a FormData object which will be sent as the data payload in the
+	    # AJAX request
+	    formData = new FormData
+	    # loop through all the selected files and add them to the formData object
+	    i = 0
+	    while i < files.length
+	      file = files[i]
+	      # add the files to formData object for the data payload
+	      formData.append 'files', file, file.name
+	      i++
+	    formData.append 'fields', path
+	    formData.append	'typeFiles', typeFile
+	    
+	    $.ajax
+	      url: '/api'
+	      type: 'POST'
+	      data: formData
+	      processData: false
+	      contentType: false
+	      success: (data) ->
+	        console.log 'upload sucess!\n' + data
+	        return
+	      xhr: ->
+	        # create an XMLHttpRequest
+	        xhr = new XMLHttpRequest
+	        # listen to the 'progress' event
+	        xhr.upload.addEventListener 'progress', ((evt) ->
+	          if evt.lengthComputable
+	            # calculate the percentage of upload completed
+	            percentComplete = evt.loaded / evt.total
+	            percentComplete = parseInt(percentComplete * 100)
+	            # update the Bootstrap progress bar with the new percentage
+	            $('.progress-bar').text percentComplete + '%'
+	            $('.progress-bar').width percentComplete + '%'
+	            # once the upload reaches 100%, set the progress bar text to done
+	            # if percentComplete == 100
+	            #   # $('.progress-bar').html 'Upload'
+	              
+	          return
+	        ), false
+	        xhr
+	  return
+
+	$("#generate").on 'click', ->
+		
+	  fields = $("input[name='vehicle']:checked").val()
+	  console.log (fields)
+	  files = $('#file').get(0).files
+	  if files.length > 0
+	    # create a FormData object which will be sent as the data payload in the
+	    # AJAX request
+	    formData = new FormData
+	    # loop through all the selected files and add them to the formData object
+	    j = 0 
+	    i = 0
+	    while i < files.length
+	      file = files[i]
+	      # add the files to formData object for the data payload
+	      formData.append 'files', file, file.name
+	      i++
+
+	    formData.append 'fields', fields
+	    formData.append	'typeFiles', typeFile
+	    $.ajax
+	      url: '/api'
+	      type: 'POST'
+	      data: formData
+	      processData: false
+	      contentType: false
+	      success: (data) ->
+	        console.log 'upload sucess!\n' + data
+	        return
+	      xhr: ->
+	        # create an XMLHttpRequest
+	        xhr = new XMLHttpRequest
+	        # listen to the 'progress' event
+	        xhr.upload.addEventListener 'progress', ((evt) ->
+	          if evt.lengthComputable
+	            # calculate the percentage of upload completed
+	            percentComplete = evt.loaded / evt.total
+	            percentComplete = parseInt(percentComplete * 100)
+	            # update the Bootstrap progress bar with the new percentage
+	            $('.progress-bar').text percentComplete + '%'
+	            $('.progress-bar').width percentComplete + '%'
+	            # once the upload reaches 100%, set the progress bar text to done
+	            # if percentComplete == 100
+	            #   # $('.progress-bar').html 'Upload'
+	              
+	          return
+	        ), false
+	        xhr
+	  return
 
 
 

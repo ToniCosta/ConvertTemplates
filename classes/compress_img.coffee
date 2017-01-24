@@ -5,7 +5,7 @@ pngquant = require 'imagemin-pngquant'
 class CompressImg
 	constructor: ->
 	
-	startImagemin: (quality) ->
+	startImagemin: (quality, uuid) ->
 
 		lowQuality = '5-15'
 		middleQuality = '50-65'
@@ -13,12 +13,9 @@ class CompressImg
 		defaultQuality = '90-100'
 		console.log quality
 		switch quality
-			when 'low'
-				quality = lowQuality	
-			when 'middle'
-				quality = middleQuality
-			when 'high'
-				quality = highQuality
+			when 'low' then quality = lowQuality	
+			when 'middle' then quality = middleQuality
+			when 'high' then quality = highQuality
 			else
 				quality = defaultQuality
 
@@ -30,6 +27,6 @@ class CompressImg
 					{ cleanupIDs: false }
 				]
 				use: [ pngquant({quality: quality, speed: 4})
-				]})).pipe(gulp.dest('./compress'))
+				]})).pipe(gulp.dest("./compress/#{uuid}"))
 	
 module.exports = CompressImg
