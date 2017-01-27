@@ -120,7 +120,6 @@ postFile = function(typeFile) {
         formData.append('files', file, file.name);
         i++;
       }
-      formData.append('fields', path);
       formData.append('typeFiles', typeFile);
       $.ajax({
         url: '/api',
@@ -149,20 +148,25 @@ postFile = function(typeFile) {
     }
   });
   return $("#generate").on('click', function() {
-    var fields, file, files, formData, i, j;
-    fields = $("input[name='vehicle']:checked").val();
-    console.log(fields);
+    var fields, file, files, formData, i, j, selected;
+    fields = $("input[name='vehicle']:checked");
     files = $('#file').get(0).files;
     if (files.length > 0) {
       formData = new FormData;
-      j = 0;
       i = 0;
       while (i < files.length) {
         file = files[i];
         formData.append('files', file, file.name);
         i++;
       }
-      formData.append('fields', fields);
+      j = 0;
+      while (j < fields.length) {
+        selected = fields[j].value;
+        console.log(selected);
+        formData.append("fields[" + j + "]", selected);
+        j++;
+      }
+      console.log(formData);
       formData.append('typeFiles', typeFile);
       $.ajax({
         url: '/api',

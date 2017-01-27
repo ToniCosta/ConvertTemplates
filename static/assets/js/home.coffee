@@ -116,7 +116,12 @@ postFile = (typeFile) ->
 	      # add the files to formData object for the data payload
 	      formData.append 'files', file, file.name
 	      i++
-	    formData.append 'fields', path
+	    # $("input[name='vehicle']:checked").each ->
+	    #   selected = []
+	    #   selected.push $(this).val()
+	    #   console.log selected
+	    #   formData.append 'fields', selected
+	    #   return
 	    formData.append	'typeFiles', typeFile
 	    
 	    $.ajax
@@ -151,23 +156,31 @@ postFile = (typeFile) ->
 
 	$("#generate").on 'click', ->
 		
-	  fields = $("input[name='vehicle']:checked").val()
-	  console.log (fields)
+	  # fields = $("input[name='vehicle']:checked").val()
+	  fields = $("input[name='vehicle']:checked")
+	  
 	  files = $('#file').get(0).files
 	  if files.length > 0
 	    # create a FormData object which will be sent as the data payload in the
 	    # AJAX request
 	    formData = new FormData
 	    # loop through all the selected files and add them to the formData object
-	    j = 0 
+	    
 	    i = 0
 	    while i < files.length
 	      file = files[i]
 	      # add the files to formData object for the data payload
 	      formData.append 'files', file, file.name
 	      i++
-
-	    formData.append 'fields', fields
+	    
+	    j = 0
+	    while j < fields.length
+	      selected = fields[j].value      
+	      console.log selected
+	      formData.append "fields["+j+"]", selected
+	      j++
+	      
+	    console.log formData
 	    formData.append	'typeFiles', typeFile
 	    $.ajax
 	      url: '/api'
