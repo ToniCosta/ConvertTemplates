@@ -10,7 +10,7 @@ convert = new ConvertTemplate
 uuidRandon = uuid.v1()
 mkdirp = require 'mkdirp'
 
-class Home
+class Compress
 	constructor: ->
 		@compress = new CompressImg
 
@@ -56,14 +56,14 @@ class Home
 			# quality = field
 			console.log fields
 			console.log fields.typeFiles
-			# if fields.typeFiles == 'image/jpeg' || fields.typeFiles == 'image/png'
-			# 	console.log fields.fields
-			# 	compress.startImagemin(fields.fields, uuidRandon)
-			# 	console.log 'chama compressao de imagens'
+			if fields.typeFiles == 'image/jpeg' || fields.typeFiles == 'image/png'
+				console.log fields.fields
+				compress.startImagemin(fields.fields, uuidRandon)
+				console.log 'chama compressao de imagens'
 
-			if fields.typeFiles == 'text/html'
-				convert.startMultipleConvertions(fields.fields)
-				console.log 'chama conversor template'
+			# if fields.typeFiles == 'text/html'
+			# 	convert.startMultipleConvertions(fields.fields)
+			# 	console.log 'chama conversor template'
 			return
 		
 
@@ -71,4 +71,4 @@ class Home
 		
 		return	
 		
-module.exports = Home
+module.exports = Compress

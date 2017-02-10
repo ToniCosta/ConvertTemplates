@@ -6,13 +6,14 @@ class CompressImg
 	constructor: ->
 	
 	startImagemin: (quality, uuid) ->
-
+		
+		
 		lowQuality = '5-15'
 		middleQuality = '50-65'
 		highQuality = '65-80'
 		defaultQuality = '90-100'
-		console.log quality
-		switch quality
+		console.log quality[0]
+		switch quality[0]
 			when 'low' then quality = lowQuality	
 			when 'middle' then quality = middleQuality
 			when 'high' then quality = highQuality

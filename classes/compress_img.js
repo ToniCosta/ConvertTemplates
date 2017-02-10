@@ -16,8 +16,8 @@ CompressImg = (function() {
     middleQuality = '50-65';
     highQuality = '65-80';
     defaultQuality = '90-100';
-    console.log(quality);
-    switch (quality) {
+    console.log(quality[0]);
+    switch (quality[0]) {
       case 'low':
         quality = lowQuality;
         break;

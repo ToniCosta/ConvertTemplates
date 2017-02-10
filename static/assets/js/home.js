@@ -120,9 +120,10 @@ postFile = function(typeFile) {
         formData.append('files', file, file.name);
         i++;
       }
+      formData.append('fields', path);
       formData.append('typeFiles', typeFile);
       $.ajax({
-        url: '/api',
+        url: '/compress',
         type: 'POST',
         data: formData,
         processData: false,
@@ -163,7 +164,7 @@ postFile = function(typeFile) {
       while (j < fields.length) {
         selected = fields[j].value;
         console.log(selected);
-        formData.append("fields[" + j + "]", selected);
+        formData.append("fields", selected);
         j++;
       }
       console.log(formData);

@@ -171,6 +171,7 @@ section.upload section.target:hover figure.icon {
 	font-size: 18px;
 	color: #534292;
 	text-align: center;
+    margin: 0 0 10px;
 
 }
 .modal input[type="radio"]{
@@ -216,6 +217,11 @@ section.upload section.target:hover figure.icon {
 	text-decoration: none;
 
 }
+.modal #download, #generate:hover{
+    background: #664a86;
+    transition: background .2s linear;
+}
+
 .modal #download:hover{
 	background: #664a86;
  	transition: background .2s linear;

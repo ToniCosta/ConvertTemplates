@@ -120,12 +120,12 @@ postFile = (typeFile) ->
 	    #   selected = []
 	    #   selected.push $(this).val()
 	    #   console.log selected
-	    #   formData.append 'fields', selected
+	    formData.append 'fields', path
 	    #   return
 	    formData.append	'typeFiles', typeFile
 	    
 	    $.ajax
-	      url: '/api'
+	      url: '/compress'
 	      type: 'POST'
 	      data: formData
 	      processData: false
@@ -177,7 +177,7 @@ postFile = (typeFile) ->
 	    while j < fields.length
 	      selected = fields[j].value      
 	      console.log selected
-	      formData.append "fields["+j+"]", selected
+	      formData.append "fields", selected
 	      j++
 	      
 	    console.log formData

@@ -5,11 +5,20 @@ prompt = require 'prompt'
 glob = require 'glob'
 path = require 'path'
 
+
 class ConvertTemplate
     constructor: ->
-
+    startMultipleConvertions: (vehicles) ->
+        i = 0
+        while i < vehicles.length
+            vehicle = vehicles[i]
+            @startConvert vehicle
+            i++
+        return
     startConvert: (adServer) ->
+       
         switch adServer
+            when 'htmlLimpo' then srcAdserver = './templates/html_limpo'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'abril' then srcAdserver = './templates/abril'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'admotion' then srcAdserver = './templates/Admotion/Banner'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}/custom/images/";
             when 'afilio' then srcAdserver = './templates/afilio'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";                
@@ -115,7 +124,6 @@ class ConvertTemplate
                             window.onload = function(){
                                 var bannerOutput = document.getElementById("page1");
                                 bannerOutput.className += " gwd-play-animation";
-
                             }
                                 
                             </script>
@@ -142,14 +150,48 @@ class ConvertTemplate
                         )
                         removeScript = $('.jsdom')
                         removeScript.remove()
-                      
+                        
+                        bannerWidth = parseInt("#{creativityWidth}")
+                        bannerHeight = parseInt("#{creativityHeight}")
+                        
                         fs.writeFile "#{destAdserver}/index.html", '<html>' + contentTemplate.parents('html').html() + '</html>', (err) ->
                             if err
                                 throw err
                             console.log 'Template Convertido com sucesso.'
-                            return
+                            
+                            fs.rename "#{destAdserver}", "#{destAdserver}_#{bannerWidth}x#{bannerHeight}", (err) ->
+                                if err
+                                    throw err
+                                console.log 'renamed complete'
+                                return
+                            filePath = './uploads/';
+                            rmDir = (dirPath) ->
+                                try
+                                    files = fs.readdirSync(dirPath)
+                                catch e
+                                    return
+                                if files.length > 0
+                                    i = 0
+                                    while i < files.length
+                                        filePath = dirPath + '/' + files[i]
+                                        if fs.statSync(filePath).isFile()
+                                            fs.unlinkSync filePath
+                                        else
+                                            rmDir filePath
+                                        i++
+                                fs.rmdirSync dirPath
+                                return
+
+
+                            rmDir(filePath)
+                           
+
                         return
+                   
+                        
+                        
                 )(contentCssBanner, contentBanner)
+                
                 jsdom.jQueryify sourceTemplate.defaultView, 'http://code.jquery.com/jquery.js', fnc
                 return
             return

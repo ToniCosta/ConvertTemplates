@@ -16,9 +16,24 @@ path = require('path');
 ConvertTemplate = (function() {
   function ConvertTemplate() {}
 
+  ConvertTemplate.prototype.startMultipleConvertions = function(vehicles) {
+    var i, vehicle;
+    i = 0;
+    while (i < vehicles.length) {
+      vehicle = vehicles[i];
+      this.startConvert(vehicle);
+      i++;
+    }
+  };
+
   ConvertTemplate.prototype.startConvert = function(adServer) {
     var destAdserver, pathIMGS, srcAdserver;
     switch (adServer) {
+      case 'htmlLimpo':
+        srcAdserver = './templates/html_limpo';
+        destAdserver = "./convert/" + adServer;
+        pathIMGS = "" + destAdserver;
+        break;
       case 'abril':
         srcAdserver = './templates/abril';
         destAdserver = "./convert/" + adServer;
@@ -145,22 +160,22 @@ ConvertTemplate = (function() {
         pathIMGS = "" + destAdserver;
     }
     fsExtra.copy(srcAdserver, destAdserver, function(err) {
-      var extension, htmlSource, htmlSourceTemplate, i, len, ref, sourceHTML, sourceTemplate;
+      var extension, htmlSource, htmlSourceTemplate, j, len, ref, sourceHTML, sourceTemplate;
       if (err) {
         return console.error(err);
       }
       console.log('success! paste');
       ref = ['*.jpg', '*.png', '*.gif'];
-      for (i = 0, len = ref.length; i < len; i++) {
-        extension = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        extension = ref[j];
         glob("./uploads/" + extension, null, function(err, files) {
-          var file, j, len1, results;
+          var file, k, len1, results;
           if (err) {
             return console.error(err);
           }
           results = [];
-          for (j = 0, len1 = files.length; j < len1; j++) {
-            file = files[j];
+          for (k = 0, len1 = files.length; k < len1; k++) {
+            file = files[k];
             console.log(file);
             results.push(fsExtra.copy(file, destAdserver + "/" + (path.basename(file)), function(err) {
               if (err) {
@@ -202,7 +217,7 @@ ConvertTemplate = (function() {
         elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
         fnc = (function(css, banner) {
           return function() {
-            var bodyTemplate, contentTemplate, headerTemplate, page, removeScript, replaceImg;
+            var bannerHeight, bannerWidth, bodyTemplate, contentTemplate, headerTemplate, page, removeScript, replaceImg;
             $ = sourceTemplate.defaultView.$;
             contentTemplate = $('body');
             headerTemplate = $('head');
@@ -225,11 +240,44 @@ ConvertTemplate = (function() {
             });
             removeScript = $('.jsdom');
             removeScript.remove();
+            bannerWidth = parseInt("" + creativityWidth);
+            bannerHeight = parseInt("" + creativityHeight);
             fs.writeFile(destAdserver + "/index.html", '<html>' + contentTemplate.parents('html').html() + '</html>', function(err) {
+              var filePath, rmDir;
               if (err) {
                 throw err;
               }
               console.log('Template Convertido com sucesso.');
+              fs.rename("" + destAdserver, destAdserver + "_" + bannerWidth + "x" + bannerHeight, function(err) {
+                if (err) {
+                  throw err;
+                }
+                console.log('renamed complete');
+              });
+              filePath = './uploads/';
+              rmDir = function(dirPath) {
+                var e, error, files, i;
+                try {
+                  files = fs.readdirSync(dirPath);
+                } catch (error) {
+                  e = error;
+                  return;
+                }
+                if (files.length > 0) {
+                  i = 0;
+                  while (i < files.length) {
+                    filePath = dirPath + '/' + files[i];
+                    if (fs.statSync(filePath).isFile()) {
+                      fs.unlinkSync(filePath);
+                    } else {
+                      rmDir(filePath);
+                    }
+                    i++;
+                  }
+                }
+                fs.rmdirSync(dirPath);
+              };
+              return rmDir(filePath);
             });
           };
         })(contentCssBanner, contentBanner);
