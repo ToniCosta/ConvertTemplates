@@ -7,7 +7,7 @@ util = require 'util'
 uuid = require 'node-uuid'
 compress = new CompressImg
 convert = new ConvertTemplate
-uuidRandon = uuid.v1()
+
 mkdirp = require 'mkdirp'
 
 class Home
@@ -15,7 +15,8 @@ class Home
 		@compress = new CompressImg
 
 	post: (req,res) ->
-		mkdirp 'uploads', (err) ->
+		uuidRandon = uuid.v1()
+		mkdirp "uploads/#{uuidRandon}/", (err) ->
         	if err
                 console.error err
             else
@@ -27,9 +28,9 @@ class Home
 
 		form.multiples = true
 		console.log uuidRandon
-		form.uploadDir = path.join('./', '/uploads')
+		form.uploadDir = path.join('./', "./uploads/#{uuidRandon}/")
 		form.on 'fileBegin', (name, file) ->
-			file.path = './uploads/' + file.name;
+			file.path = "uploads/#{uuidRandon}/" + file.name;
 			console.log('Uploaded ' + file.name);
 
 		form.on 'file', (name, file) ->
@@ -62,7 +63,7 @@ class Home
 			# 	console.log 'chama compressao de imagens'
 
 			if fields.typeFiles == 'text/html'
-				convert.startMultipleConvertions(fields.fields)
+				convert.startMultipleConvertions(fields.fields,uuidRandon)
 				console.log 'chama conversor template'
 			return
 		

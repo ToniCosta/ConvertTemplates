@@ -7,7 +7,7 @@ util = require 'util'
 uuid = require 'node-uuid'
 compress = new CompressImg
 convert = new ConvertTemplate
-uuidRandon = uuid.v1()
+
 mkdirp = require 'mkdirp'
 
 class Compress
@@ -15,7 +15,8 @@ class Compress
 		@compress = new CompressImg
 
 	post: (req,res) ->
-		mkdirp 'uploads', (err) ->
+		uuidRandon = uuid.v1()
+		mkdirp "uploads/#{uuidRandon}/", (err) ->
         	if err
                 console.error err
             else
@@ -27,10 +28,10 @@ class Compress
 
 		form.multiples = true
 		console.log uuidRandon
-		form.uploadDir = path.join('./', '/uploads')
+		form.uploadDir = path.join('./', "./uploads/#{uuidRandon}/")
 		form.on 'fileBegin', (name, file) ->
-			file.path = './uploads/' + file.name;
-			console.log('Uploaded ' + file.name);
+			file.path = "./uploads/#{uuidRandon}/" + file.name;
+			# console.log('Uploaded ' + file.name);
 
 		form.on 'file', (name, file) ->
 			# console.log('Uploaded ' + file.name);

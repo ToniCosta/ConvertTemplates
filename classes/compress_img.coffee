@@ -20,7 +20,7 @@ class CompressImg
 			else
 				quality = defaultQuality
 
-		gulp.src('./uploads/*')
+		gulp.src("./uploads/#{uuid}/*")
 			.pipe(imagemin({
 				progressive: true
 				svgoPlugins: [

@@ -30,7 +30,7 @@ CompressImg = (function() {
       default:
         quality = defaultQuality;
     }
-    return gulp.src('./uploads/*').pipe(imagemin({
+    return gulp.src("./uploads/" + uuid + "/*").pipe(imagemin({
       progressive: true,
       svgoPlugins: [
         {

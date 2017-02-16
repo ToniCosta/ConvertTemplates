@@ -4,66 +4,79 @@ fsExtra = require 'fs-extra'
 prompt = require 'prompt'
 glob = require 'glob'
 path = require 'path'
+mkdirp = require 'mkdirp'
 
 
 class ConvertTemplate
     constructor: ->
-    startMultipleConvertions: (vehicles) ->
+    startMultipleConvertions: (vehicles, uuid) ->
         i = 0
         while i < vehicles.length
             vehicle = vehicles[i]
-            @startConvert vehicle
+            @startConvert vehicle, uuid
             i++
         return
-    startConvert: (adServer) ->
-       
+        
+    startConvert: (adServer, uuid) ->
+          
         switch adServer
-            when 'htmlLimpo' then srcAdserver = './templates/html_limpo'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'abril' then srcAdserver = './templates/abril'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'admotion' then srcAdserver = './templates/Admotion/Banner'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}/custom/images/";
-            when 'afilio' then srcAdserver = './templates/afilio'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";                
-            when 'atlas' then srcAdserver = './templates/atlas_by_facebook'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'buscape' then srcAdserver = './templates/buscape'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'cbn' then srcAdserver = './templates/cbn'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'dbcm' then srcAdserver = './templates/dbcm'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'dcm_africa' then srcAdserver = './templates/dcm_africa'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'dcm_africa_loop' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'dcStudio' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'estadao' then srcAdserver = './templates/estadao'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'gdnAdword' then srcAdserver = './templates/gdnAdword'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'globo' then srcAdserver = './templates/globo'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'ig' then srcAdserver = './templates/ig'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'infomoney' then srcAdserver = './templates/infomoney'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'mercadoEventos' then srcAdserver = './templates/mercadoEventos'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'mercadoLivre' then srcAdserver = './templates/mercadoLivre'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'msn' then srcAdserver = './templates/msn'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'nzn' then srcAdserver = './templates/nzn'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'r7' then srcAdserver = './templates/r7'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'sizmek' then srcAdserver = './templates/sizmek'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'smartclip' then srcAdserver = './templates/smartclip'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'sociomantic' then srcAdserver = './templates/sociomantic'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'techmundo' then srcAdserver = './templates/techmundo'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'terra' then srcAdserver = './templates/terra'; destAdserver = "./convert/#{adServer}"; pathIMGS = "#{destAdserver}";
-
-
+            when 'htmlLimpo' then srcAdserver = './templates/html_limpo'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'abril' then srcAdserver = './templates/abril'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'admotion' then srcAdserver = './templates/Admotion/Banner'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}/custom/images/";
+            when 'afilio' then srcAdserver = './templates/afilio'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";                
+            when 'atlas' then srcAdserver = './templates/atlas_by_facebook'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'buscape' then srcAdserver = './templates/buscape'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'cbn' then srcAdserver = './templates/cbn'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'dbcm' then srcAdserver = './templates/dbcm'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'dcm_africa' then srcAdserver = './templates/dcm_africa'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'dcm_africa_loop' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'dcStudio' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'estadao' then srcAdserver = './templates/estadao'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'gdnAdword' then srcAdserver = './templates/gdnAdword'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'globo' then srcAdserver = './templates/globo'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'ig' then srcAdserver = './templates/ig'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'infomoney' then srcAdserver = './templates/infomoney'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'mercadoEventos' then srcAdserver = './templates/mercadoEventos'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'mercadoLivre' then srcAdserver = './templates/mercadoLivre'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'msn' then srcAdserver = './templates/msn'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'nzn' then srcAdserver = './templates/nzn'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'r7' then srcAdserver = './templates/r7'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'sizmek' then srcAdserver = './templates/sizmek'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'smartclip' then srcAdserver = './templates/smartclip'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'sociomantic' then srcAdserver = './templates/sociomantic'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'techmundo' then srcAdserver = './templates/techmundo'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'terra' then srcAdserver = './templates/terra'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'uol' then srcAdserver = './templates/uol'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+        mkdirp "#{destAdserver}", (err) ->
+            if err
+                console.error err
+            else
+                console.log 'Done!'
+            return  
+        console.log destAdserver
         fsExtra.copy srcAdserver, destAdserver, (err) ->
             if err
                 return console.error(err)
             console.log 'success! paste'
 
             for extension in ['*.jpg','*.png','*.gif']
-                glob "./uploads/#{extension}", null, (err, files) ->
+                glob "./uploads/#{uuid}/#{extension}", null, (err, files) ->
 
                     if err
                         return console.error(err)
                     
                     for file in files
                         console.log file
-                        fsExtra.copy file, "#{destAdserver}/#{path.basename file}", (err) ->
+                        if adServer == 'admotion'
+                            fsExtra.copy file, "#{destAdserver}/custom/images/#{path.basename file}", (err) ->
                             if err
                                 return console.error(err)
+                        else
+                            fsExtra.copy file, "#{destAdserver}/#{path.basename file}", (err) ->
+                                if err
+                                    return console.error(err)
 
-            htmlSource = fs.readFileSync("./uploads/index.html", 'utf8')
+            htmlSource = fs.readFileSync("./uploads/#{uuid}/index.html", 'utf8')
             htmlSourceTemplate = fs.readFileSync("#{destAdserver}/index.html", 'utf8')
             # console.log htmlSource
             sourceHTML = jsdom.jsdom(htmlSource,
@@ -87,7 +100,9 @@ class ConvertTemplate
 
                 creativityWidth = $('#page1').attr('data-gwd-width')
                 creativityHeight = $('#page1').attr('data-gwd-height')
+
                 console.log creativityWidth
+                console.log creativityHeight
                 # cssBanner = $('style')
                 # cssBanner = $('style').each((el,data)->
                 #     console.log $(data).html()
@@ -96,21 +111,41 @@ class ConvertTemplate
                 
                 # )
                 cssBanner = $('style')
-                contentCssBannerOveflow = cssBanner[4].outerHTML
-                contentCssBanner = cssBanner[6].outerHTML
+                contentCssBannerOveflow = "<style>#page1{overflow:hidden}</style>"
+                # contentCssBanner = cssBanner[6].outerHTML
+                cssBannerLength = cssBanner.length
+                # console.log cssBannerLength
+                l = 0
+                while l < cssBannerLength
+                    contentCssBanner = cssBanner[l].outerHTML
+                    # console.log contentCssBanner
+                    l++
                 elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
                 # console.log contentCssBanner
                 
                 fnc = ((css, banner) ->
                     ->
                         $ = sourceTemplate.defaultView.$
-                        contentTemplate = $('body')
+                        
 
                         headerTemplate = $('head')
                         # console.log headerTemplate
+                        if adServer == 'admotion'
+                            contentTemplate = $('#Creativity')
+                        else
+                            contentTemplate = $('body')
+                            
                         bodyTemplate = $('body')
                         page = $('#page1')
                         page.addClass(' gwd-play-animation')
+                        if adServer == 'admotion'
+                        
+                            bannerDimensions = $('#bannerDimensions')
+                            bannerDimensions.html('
+                                var adConfig = {};
+                                adConfig.creativityWidth = "'+"#{creativityWidth}"+'";
+                                adConfig.creativityHeight = "'+"#{creativityHeight}"+'";
+                            ')
                         #  /// ADMOTION SPECS
                         # bannerDimensions = $('#bannerDimensions')
                         # bannerDimensions.html('
@@ -142,8 +177,10 @@ class ConvertTemplate
                             tag.removeAttr 'is'
                             tag.removeAttr 'id'
                             tag.removeAttr 'source'
-                            # tag.attr 'src', 'custom/images/' + source
-                            tag.attr 'src', source
+                            if adServer == 'admotion'
+                                tag.attr 'src', 'custom/images/' + source
+                            else
+                                tag.attr 'src', source
                             # console.log tag[0].outerHTML
                             return
                             
@@ -165,25 +202,25 @@ class ConvertTemplate
                                 console.log 'renamed complete'
                                 return
                             filePath = './uploads/';
-                            rmDir = (dirPath) ->
-                                try
-                                    files = fs.readdirSync(dirPath)
-                                catch e
-                                    return
-                                if files.length > 0
-                                    i = 0
-                                    while i < files.length
-                                        filePath = dirPath + '/' + files[i]
-                                        if fs.statSync(filePath).isFile()
-                                            fs.unlinkSync filePath
-                                        else
-                                            rmDir filePath
-                                        i++
-                                fs.rmdirSync dirPath
-                                return
+                            # rmDir = (dirPath) ->
+                            #     try
+                            #         files = fs.readdirSync(dirPath)
+                            #     catch e
+                            #         return
+                            #     if files.length > 0
+                            #         i = 0
+                            #         while i < files.length
+                            #             filePath = dirPath + '/' + files[i]
+                            #             if fs.statSync(filePath).isFile()
+                            #                 fs.unlinkSync filePath
+                            #             else
+                            #                 rmDir filePath
+                            #             i++
+                            #     fs.rmdirSync dirPath
+                            #     return
 
 
-                            rmDir(filePath)
+                            # rmDir(filePath)
                            
 
                         return

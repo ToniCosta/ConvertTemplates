@@ -91,6 +91,7 @@ header nav ul li a {
     text-decoration:none;
 }
 header nav ul li a:hover{background-color:#79589F}
+header nav ul li a.active{background-color:#79589F}
 section.upload {
     position: relative;
     -webkit-box-sizing: border-box;
@@ -102,6 +103,11 @@ section.upload {
 }
 section.upload p{
 	text-align: center;
+
+}
+section.upload .version{
+    font-size: 10px;
+    color: #fff;
 }
 section.upload section.target {
     position: relative;
@@ -171,6 +177,13 @@ section.upload section.target:hover figure.icon {
 	font-size: 18px;
 	color: #534292;
 	text-align: center;
+    margin: 0 0 10px;
+
+}
+form h2{
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
     margin: 0 0 10px;
 
 }

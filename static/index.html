@@ -3,7 +3,7 @@
 	<head>
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	    <title>Conversão Templates</title>
+	    <title>Convert Templates</title>
 	    
 	</head>
 	<body>
@@ -12,10 +12,10 @@
 	    	<nav>
 	    		<ul>
 	    			<li>
-	    				<a href="/">Conversão Templates</a>
+	    				<a href="/" class="active">Convert</a>
 	    			</li>
 	    			<li>
-	    				<a href="/compress.html">Compressão Imagens</a>
+	    				<a href="/compress.html">Compress</a>
 	    			</li>
 	    			<!-- <li>
 	    				<a href="/compress">Compress</a>
@@ -24,8 +24,9 @@
 	    	</nav>
 	    	
 	    	<section class="upload">
+	    	
 	    		<form id="form" action="/api" enctype="multipart/form-data" method="post">
-
+				<h2>Convert Templates</h2>
 	    		<div id="modalCompressImg" class="modal">
 					<h2>Selecione o nivel de qualidade da imagem</h2>
 					<ul>
@@ -46,6 +47,16 @@
 				<div id="modalTemplate" class="modal">
 					<h2>Selecione abaixo o veículo:</h2>
 					<div class="left">
+							<label>DBM/DCM</label>
+							<input type="checkbox" name="vehicle" value="dbcm"><br>
+							<label>GDN/ADWORD</label>
+							<input type="checkbox" name="vehicle" value="gdnAdword"><br>
+							<label>DBM/DCM (LOOP)</label>
+							<input type="checkbox" name="vehicle" value="dbcm_loop"><br>
+							<label>GDN/ADWORD (LOOP)</label>
+							<input type="checkbox" name="vehicle" value="gdnAdword_loop"><br>
+							<label>ADMOTION</label>
+							<input type="checkbox" name="vehicle" value="admotion"><br>
 							<label>HTML LIMPO</label>
 							<input type="checkbox" name="vehicle" value="htmlLimpo"><br>
 							<label>ABRIL</label>
@@ -53,27 +64,21 @@
 							<label>AFILIO</label>
 							<input type="checkbox" name="vehicle" value="afilio"><br>
 							<label>ATLAS</label>
-							<input type="checkbox" name="vehicle" value="atlas"><br>
-							<label>ADMOTION</label>
-							<input type="checkbox" name="vehicle" value="admotion"><br>
+							<input type="checkbox" name="vehicle" value="atlas"><br>							
 							<label>BUSCAPÉ</label>
 							<input type="checkbox" name="vehicle" value="buscape"><br>
 							<label>CBN</label>
-							<input type="checkbox" name="vehicle" value="cbn"><br>
-							<label>DBM/DCM</label>
-							<input type="checkbox" name="vehicle" value="dbcm"><br>
-							<label>GDN/ADWORD</label>
-							<input type="checkbox" name="vehicle" value="gdnAdword"><br>
+							<input type="checkbox" name="vehicle" value="cbn"><br>							
 							<label>ESTADÃO</label>
 							<input type="checkbox" name="vehicle" value="estadao"><br>
 							<label>GLOBO</label>
 							<input type="checkbox" name="vehicle" value="globo"><br>
-							<label>IG</label>
-							<input type="checkbox" name="vehicle" value="ig">
+							
 					</div>
 					<div class="left">
 							
-							
+							<label>IG</label>
+							<input type="checkbox" name="vehicle" value="ig"><br>
 							<label>INFOMONEY</label>
 							<input type="checkbox" name="vehicle" value="infomoney"><br>
 							<label>MERCADO LIVRE</label>
@@ -97,7 +102,7 @@
 							<label>TERRA</label>
 							<input type="checkbox" name="vehicle" value="terra"><br>
 							<label>UOL</label>
-							<input type="checkbox" name="vehicle" value="UOL"><br>
+							<input type="checkbox" name="vehicle" value="uol"><br>
 						
 					</div>
 					<br style="clear:both;">
@@ -120,7 +125,7 @@
     			</form>
     			
 				
-			
+			<p class="version">Versão 1.0.1</p>
 	    		   				
 	    	</section>
 	    </header>
