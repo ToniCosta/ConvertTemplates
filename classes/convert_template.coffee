@@ -26,12 +26,12 @@ class ConvertTemplate
             when 'afilio' then srcAdserver = './templates/afilio'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";                
             when 'atlas' then srcAdserver = './templates/atlas_by_facebook'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'buscape' then srcAdserver = './templates/buscape'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'cbn' then srcAdserver = './templates/cbn'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'cbn' then srcAdserver = './templates/cbn'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}"; 
             when 'dbcm' then srcAdserver = './templates/dbcm'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dbcm_loop' then srcAdserver = './templates/dbcm_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dcm_africa' then srcAdserver = './templates/dcm_africa'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dcm_africa_loop' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
-            when 'dcStudio' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'dcStudio' then srcAdserver = './templates/DCStudio_banner'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'estadao' then srcAdserver = './templates/estadao'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'gdnAdword' then srcAdserver = './templates/gdnAdword'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'gdnAdword_loop' then srcAdserver = './templates/gdnAdword_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
@@ -116,7 +116,8 @@ class ConvertTemplate
                 console.log urlDestino
                 cssBanner = $('style')
                 contentCssBannerOveflow = "<style>#page1{overflow:hidden}</style>"
-                contentUrlDestino = '<script>var clickTag = "'+"#{urlDestino}"+'"</script>'
+                
+                # contentUrlDestino = '<script>var clickTag = "'+"#{urlDestino}"+'"</script>'
                 # contentCssBanner = cssBanner[6].outerHTML
                 cssBannerLength = cssBanner.length
                 # console.log cssBannerLength
@@ -125,9 +126,7 @@ class ConvertTemplate
                     contentCssBanner = cssBanner[l].outerHTML
                     # console.log contentCssBanner
                     l++
-                elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
-                # console.log contentCssBanner
-                
+
                 fnc = ((css, banner) ->
                     ->
                         $ = sourceTemplate.defaultView.$
@@ -137,9 +136,37 @@ class ConvertTemplate
                         # console.log headerTemplate
                         if adServer == 'admotion'
                             contentTemplate = $('#Creativity')
+                        if adServer == 'afilio'
+                            elementClickTag = '<style>.clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('#BNafilio')
+                            contentUrlDestino = '<script type="text/javascript">document.getElementById("BNafilio").addEventListener("click", function(){ var url = document.getElementById("afilio_tracker").setAttribute("href","'+urlDestino+'")});</script>'
+                        if adServer == 'cbn'
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('body')
+                            contentUrlDestino = '<script type="text/javascript">var clickTag = "'+urlDestino+'"</script>'
+                        if adServer == 'dbcm' || adServer == 'dbcm_loop'
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('body')
+                            contentUrlDestino = '<script type="text/javascript">var clickTag = "'+urlDestino+'"; var clickArea = document.getElementById("clickTagArea"); clickArea.onclick = function(){ window.open(clickTag, "_blank");}</script>'
+                        if adServer == 'dcm_Africa' || adServer == 'dcm_Africa_loop'
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('body')
+                            contentUrlDestino = '<script type="text/javascript">var clickTag = "'+urlDestino+'"; function openURL(){ window.open(window.clickTag);}</script>'
+                        if adServer == 'dcStudio'
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('body')
+                            contentUrlDestino = '<script type="text/javascript">var clickTag = "'+urlDestino+'";'
+                        if adServer == 'nzn'
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('body')
+                            contentUrlDestino = '<script type="text/javascript">var clickTag = "'+urlDestino+'";'
+                        if adServer == 'smartclip'
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
+                            contentTemplate = $('body')
+                            contentUrlDestino = '<script type="text/javascript">var url = document.getElementById("clickTagArea").setAttribute("href","'+urlDestino+'");</script>'
                         else
                             contentTemplate = $('body')
-                            
+                            elementClickTag = '<style>#clickTagArea{position:absolute; width:'+"#{creativityWidth}"+'; height:'+"#{creativityHeight}"+';left:0;top:0;cursor:pointer;}</style>'
                         bodyTemplate = $('body')
                         page = $('#page1')
                         page.addClass(' gwd-play-animation')
@@ -174,10 +201,15 @@ class ConvertTemplate
                         headerTemplate.append contentCssBannerOveflow
                         headerTemplate.append contentCssBanner
                         headerTemplate.append elementClickTag
-                        headerTemplate.prepend contentUrlDestino
+                        # headerTemplate.prepend contentUrlDestino
                         
                         # console.log contentCssBanner
-                        contentTemplate.prepend contentBanner
+                        if adServer == 'nzn'
+                            contentTemplate.prepend contentBanner
+                            headerTemplate.append contentUrlDestino
+                        else
+                            contentTemplate.prepend contentBanner
+                            bodyTemplate.append contentUrlDestino
 
 
                         replaceImg = $('img[is="gwd-image"]').each((index, data) ->
@@ -210,7 +242,7 @@ class ConvertTemplate
                                     throw err
                                 console.log 'renamed complete'
                                 return
-                            filePath = './uploads/';
+                            # filePath = './uploads/';
                             # rmDir = (dirPath) ->
                             #     try
                             #         files = fs.readdirSync(dirPath)

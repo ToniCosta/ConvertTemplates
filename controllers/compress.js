@@ -65,13 +65,8 @@ Compress = (function() {
       res.end(util.inspect({
         fields: fields
       }));
-      console.log(fields);
-      console.log(fields.typeFiles);
-      if (fields.typeFiles === 'image/jpeg' || fields.typeFiles === 'image/png') {
-        console.log(fields.fields);
-        compress.startImagemin(fields.fields, uuidRandon);
-        console.log('chama compressao de imagens');
-      }
+      compress.startImagemin(fields.fields, uuidRandon);
+      console.log('chama compressao de imagens');
     });
     form.parse(req);
   };

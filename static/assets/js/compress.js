@@ -35,15 +35,13 @@ handleFileSelect = function(evt) {
   while (f = files[i]) {
     output.push('<strong>', escape(f.type), '</strong><br>');
     i++;
-    if (escape(f.type) === 'text/html') {
-      console.log('html');
+    if (escape(f.type) === 'image/jpeg' || escape(f.type) === 'image/png') {
+      console.log('images');
       $('.progress').show();
-      modalTemplate.style.display = 'block';
+      modalCompressImg.style.display = 'block';
     }
     pathURL.innerHTML = output.join('');
   }
-  return;
-  return inputFile.click();
 };
 
 handleDragOver = function(evt) {
@@ -70,11 +68,11 @@ handleInputFile = function(evt) {
   while (f = files[i]) {
     output.push('<strong>', escape(f.type), '</strong><br>');
     i++;
-    if (escape(f.type) === 'text/html') {
-      console.log('html');
+    if (escape(f.type) === 'image/jpeg' || escape(f.type) === 'image/png') {
+      console.log('images');
       typeFile = f.type;
       $('.progress').show();
-      modalTemplate.style.display = 'block';
+      modalCompressImg.style.display = 'block';
     }
     pathURL.innerHTML = output.join('');
   }
@@ -88,16 +86,18 @@ target.addEventListener('dragover', handleDragOver, false);
 
 target.addEventListener('drop', handleFileSelect, false);
 
-btnFecharHTML.addEventListener('click', handleBtnFechar, false);
+btnFechar.addEventListener('click', handleBtnFechar, false);
 
 $('.progress-bar').text('0%');
 
 $('.progress-bar').width('0%');
 
-$("#generate").on('click', function() {
-  var fields, file, files, formData, i, j, selected;
-  fields = $("input[name='vehicle']:checked");
+$("input[name='gender']").on('click', function() {
+  var file, files, formData, i, path;
+  path = $("input[name='gender']:checked").val();
+  console.log(path);
   files = $('#file').get(0).files;
+  console.log(files);
   if (files.length > 0) {
     formData = new FormData;
     i = 0;
@@ -106,16 +106,9 @@ $("#generate").on('click', function() {
       formData.append('files', file, file.name);
       i++;
     }
-    j = 0;
-    while (j < fields.length) {
-      selected = fields[j].value;
-      console.log(selected);
-      formData.append("fields", selected);
-      j++;
-    }
-    console.log(formData);
+    formData.append('fields', path);
     $.ajax({
-      url: '/api',
+      url: '/compress',
       type: 'POST',
       data: formData,
       processData: false,

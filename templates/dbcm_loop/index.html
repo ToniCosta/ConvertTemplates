@@ -8,12 +8,6 @@
 <body>
       
     <a id="clickTagArea" class="clickTagArea"></a>
-    <script>
-        var clickTag = "http://www.example.com.br";
-        var clickArea = document.getElementById("clickTagArea");
-        clickArea.onclick = function(){
-            window.open(clickTag, "_blank");
-        }
-    </script>
+    
     <script>function execFunction(a,b,c){setTimeout(function(){return a>1&&execFunction(--a,b,c)},b),c(a)}function init(){if(isIdAvailable("page1"))var a=document.getElementById("page1");else var a=document.getElementById("banner-page");checkAnimation(!0,a),execFunction(1,500,function(){autoLoop(a)})}function autoLoop(a){var b=a,e=setInterval(function(){},1e3);setTimeout(function(){clearInterval(e),checkAnimation(!1,b),setInterval(function(){reloadCreative(b)},100)},15e3)}function reloadCreative(a){var b=a;checkAnimation(!0,b)}function isIdAvailable(a){var b=document.getElementById(a);return ret=null!=b,ret}function checkAnimation(a,b){var c=b;if(a)if(c.classList){if(c.classList.contains("gwd-play-animation"))return;c.className+=" gwd-play-animation"}else c.className+=" gwd-play-animation";else c.classList.remove("gwd-play-animation")}init();</script>
 </body></html>

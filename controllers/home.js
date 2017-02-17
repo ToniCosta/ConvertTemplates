@@ -40,7 +40,7 @@ Home = (function() {
     form = new formidable.IncomingForm();
     form.multiples = true;
     console.log(uuidRandon);
-    form.uploadDir = path.join('./', "uploads/" + uuidRandon + "/");
+    form.uploadDir = path.join('./', "./uploads/" + uuidRandon + "/");
     form.on('fileBegin', function(name, file) {
       file.path = ("uploads/" + uuidRandon + "/") + file.name;
       return console.log('Uploaded ' + file.name);
@@ -66,12 +66,8 @@ Home = (function() {
       res.end(util.inspect({
         fields: fields
       }));
-      console.log(fields);
-      console.log(fields.typeFiles);
-      if (fields.typeFiles === 'text/html') {
-        convert.startMultipleConvertions(fields.fields, uuidRandon);
-        console.log('chama conversor template');
-      }
+      convert.startMultipleConvertions(fields.fields, uuidRandon);
+      return console.log('chama conversor template');
     });
     form.parse(req);
   };

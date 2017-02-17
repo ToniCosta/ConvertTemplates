@@ -87,7 +87,7 @@ ConvertTemplate = (function() {
         pathIMGS = "" + destAdserver;
         break;
       case 'dcStudio':
-        srcAdserver = './templates/dcm_africa_loop';
+        srcAdserver = './templates/DCStudio_banner';
         destAdserver = "./convert/" + uuid + "/" + adServer;
         pathIMGS = "" + destAdserver;
         break;
@@ -235,7 +235,7 @@ ConvertTemplate = (function() {
         parsingMode: 'auto'
       });
       jsdom.jQueryify(sourceHTML.defaultView, 'http://code.jquery.com/jquery.js', function() {
-        var $, contentBanner, contentCssBanner, contentCssBannerOveflow, contentUrlDestino, creativityHeight, creativityWidth, cssBanner, cssBannerLength, elementClickTag, fnc, l, urlDestino;
+        var $, contentBanner, contentCssBanner, contentCssBannerOveflow, creativityHeight, creativityWidth, cssBanner, cssBannerLength, fnc, l, urlDestino;
         $ = sourceHTML.defaultView.$;
         contentBanner = $('#page1').parent().html();
         creativityWidth = $('#page1').attr('data-gwd-width');
@@ -246,23 +246,57 @@ ConvertTemplate = (function() {
         console.log(urlDestino);
         cssBanner = $('style');
         contentCssBannerOveflow = "<style>#page1{overflow:hidden}</style>";
-        contentUrlDestino = '<script>var clickTag = "' + ("" + urlDestino) + '"</script>';
         cssBannerLength = cssBanner.length;
         l = 0;
         while (l < cssBannerLength) {
           contentCssBanner = cssBanner[l].outerHTML;
           l++;
         }
-        elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
         fnc = (function(css, banner) {
           return function() {
-            var bannerDimensions, bannerHeight, bannerWidth, bodyTemplate, contentTemplate, headerTemplate, page, removeScript, replaceImg;
+            var bannerDimensions, bannerHeight, bannerWidth, bodyTemplate, contentTemplate, contentUrlDestino, elementClickTag, headerTemplate, page, removeScript, replaceImg;
             $ = sourceTemplate.defaultView.$;
             headerTemplate = $('head');
             if (adServer === 'admotion') {
               contentTemplate = $('#Creativity');
+            }
+            if (adServer === 'afilio') {
+              elementClickTag = '<style>.clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('#BNafilio');
+              contentUrlDestino = '<script type="text/javascript">document.getElementById("BNafilio").addEventListener("click", function(){ var url = document.getElementById("afilio_tracker").setAttribute("href","' + urlDestino + '")});</script>';
+            }
+            if (adServer === 'cbn') {
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('body');
+              contentUrlDestino = '<script type="text/javascript">var clickTag = "' + urlDestino + '"</script>';
+            }
+            if (adServer === 'dbcm' || adServer === 'dbcm_loop') {
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('body');
+              contentUrlDestino = '<script type="text/javascript">var clickTag = "' + urlDestino + '"; var clickArea = document.getElementById("clickTagArea"); clickArea.onclick = function(){ window.open(clickTag, "_blank");}</script>';
+            }
+            if (adServer === 'dcm_Africa' || adServer === 'dcm_Africa_loop') {
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('body');
+              contentUrlDestino = '<script type="text/javascript">var clickTag = "' + urlDestino + '"; function openURL(){ window.open(window.clickTag);}</script>';
+            }
+            if (adServer === 'dcStudio') {
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('body');
+              contentUrlDestino = '<script type="text/javascript">var clickTag = "' + urlDestino + '";';
+            }
+            if (adServer === 'nzn') {
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('body');
+              contentUrlDestino = '<script type="text/javascript">var clickTag = "' + urlDestino + '";';
+            }
+            if (adServer === 'smartclip') {
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
+              contentTemplate = $('body');
+              contentUrlDestino = '<script type="text/javascript">var url = document.getElementById("clickTagArea").setAttribute("href","' + urlDestino + '");</script>';
             } else {
               contentTemplate = $('body');
+              elementClickTag = '<style>#clickTagArea{position:absolute; width:' + ("" + creativityWidth) + '; height:' + ("" + creativityHeight) + ';left:0;top:0;cursor:pointer;}</style>';
             }
             bodyTemplate = $('body');
             page = $('#page1');
@@ -275,8 +309,13 @@ ConvertTemplate = (function() {
             headerTemplate.append(contentCssBannerOveflow);
             headerTemplate.append(contentCssBanner);
             headerTemplate.append(elementClickTag);
-            headerTemplate.prepend(contentUrlDestino);
-            contentTemplate.prepend(contentBanner);
+            if (adServer === 'nzn') {
+              contentTemplate.prepend(contentBanner);
+              headerTemplate.append(contentUrlDestino);
+            } else {
+              contentTemplate.prepend(contentBanner);
+              bodyTemplate.append(contentUrlDestino);
+            }
             replaceImg = $('img[is="gwd-image"]').each(function(index, data) {
               var source, tag;
               tag = $(data);
@@ -295,18 +334,16 @@ ConvertTemplate = (function() {
             bannerWidth = parseInt("" + creativityWidth);
             bannerHeight = parseInt("" + creativityHeight);
             fs.writeFile(destAdserver + "/index.html", '<html>' + contentTemplate.parents('html').html() + '</html>', function(err) {
-              var filePath;
               if (err) {
                 throw err;
               }
               console.log('Template Convertido com sucesso.');
-              fs.rename("" + destAdserver, destAdserver + "_" + bannerWidth + "x" + bannerHeight, function(err) {
+              return fs.rename("" + destAdserver, destAdserver + "_" + bannerWidth + "x" + bannerHeight, function(err) {
                 if (err) {
                   throw err;
                 }
                 console.log('renamed complete');
               });
-              return filePath = './uploads/';
             });
           };
         })(contentCssBanner, contentBanner);

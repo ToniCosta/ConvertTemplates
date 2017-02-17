@@ -24,17 +24,17 @@ handleFileSelect = (evt) ->
 		output.push '<strong>', escape(f.type), '</strong><br>'
 
 		i++
-		if escape(f.type) == 'text/html'
-			console.log 'html'
-			$('.progress').show()
-			modalTemplate.style.display = 'block'
-			
 		
+			
+		if escape(f.type) == 'image/jpeg' || escape(f.type) == 'image/png'
+			console.log 'images'
+			$('.progress').show()
+			modalCompressImg.style.display = 'block'
 			
 		pathURL.innerHTML = output.join('')
 	
 	return
-	inputFile.click()
+
 
 handleDragOver = (evt) ->
 	evt.stopPropagation()
@@ -60,57 +60,57 @@ handleInputFile = (evt) ->
 	f = undefined
 	while f = files[i]
 		output.push '<strong>', escape(f.type), '</strong><br>'
-
 		i++
-		if escape(f.type) == 'text/html'
-			console.log 'html'
+		if escape(f.type) == 'image/jpeg' || escape(f.type) == 'image/png'
+			console.log 'images'
 			typeFile = f.type
 			$('.progress').show()
-			modalTemplate.style.display = 'block'
-					
+			modalCompressImg.style.display = 'block'
+			
+			
 		pathURL.innerHTML = output.join('')
-		
+
 	return
 	
 target.addEventListener 'click', handleTarget, false
 inputFile.addEventListener 'change', handleInputFile, false
 target.addEventListener 'dragover', handleDragOver, false
 target.addEventListener 'drop', handleFileSelect, false
-btnFecharHTML.addEventListener 'click', handleBtnFechar, false
+btnFechar.addEventListener 'click', handleBtnFechar, false
+
 
 $('.progress-bar').text('0%');
 $('.progress-bar').width('0%');
 
-$("#generate").on 'click', ->
+
+
+$("input[name='gender']").on 'click', ->
 	
-  # fields = $("input[name='vehicle']:checked").val()
-  fields = $("input[name='vehicle']:checked")
-  
+  path = $("input[name='gender']:checked").val()
+  console.log (path)
   files = $('#file').get(0).files
+  console.log (files)
   if files.length > 0
     # create a FormData object which will be sent as the data payload in the
     # AJAX request
     formData = new FormData
     # loop through all the selected files and add them to the formData object
-    
     i = 0
     while i < files.length
       file = files[i]
       # add the files to formData object for the data payload
       formData.append 'files', file, file.name
       i++
-    
-    j = 0
-    while j < fields.length
-      selected = fields[j].value      
-      console.log selected
-      formData.append "fields", selected
-      j++
-      
-    console.log formData
+    # $("input[name='vehicle']:checked").each ->
+    #   selected = []
+    #   selected.push $(this).val()
+    #   console.log selected
+    formData.append 'fields', path
+    #   return
     # formData.append	'typeFiles', typeFile
+    
     $.ajax
-      url: '/api'
+      url: '/compress'
       type: 'POST'
       data: formData
       processData: false
@@ -138,6 +138,8 @@ $("#generate").on 'click', ->
         ), false
         xhr
   return
+
+
 
 
 

@@ -54,18 +54,10 @@ class Home
 			
 			res.write('received the data:\n\n');
 			res.end util.inspect({fields: fields})
-			# quality = field
-			console.log fields
-			console.log fields.typeFiles
-			# if fields.typeFiles == 'image/jpeg' || fields.typeFiles == 'image/png'
-			# 	console.log fields.fields
-			# 	compress.startImagemin(fields.fields, uuidRandon)
-			# 	console.log 'chama compressao de imagens'
-
-			if fields.typeFiles == 'text/html'
-				convert.startMultipleConvertions(fields.fields,uuidRandon)
-				console.log 'chama conversor template'
-			return
+	
+			convert.startMultipleConvertions(fields.fields,uuidRandon)
+			console.log 'chama conversor template'
+			# return
 		
 
 		form.parse req
