@@ -71,6 +71,11 @@ ConvertTemplate = (function() {
         destAdserver = "./convert/" + uuid + "/" + adServer;
         pathIMGS = "" + destAdserver;
         break;
+      case 'dbcm_loop':
+        srcAdserver = './templates/dbcm_loop';
+        destAdserver = "./convert/" + uuid + "/" + adServer;
+        pathIMGS = "" + destAdserver;
+        break;
       case 'dcm_africa':
         srcAdserver = './templates/dcm_africa';
         destAdserver = "./convert/" + uuid + "/" + adServer;
@@ -93,6 +98,11 @@ ConvertTemplate = (function() {
         break;
       case 'gdnAdword':
         srcAdserver = './templates/gdnAdword';
+        destAdserver = "./convert/" + uuid + "/" + adServer;
+        pathIMGS = "" + destAdserver;
+        break;
+      case 'gdnAdword_loop':
+        srcAdserver = './templates/gdnAdword_loop';
         destAdserver = "./convert/" + uuid + "/" + adServer;
         pathIMGS = "" + destAdserver;
         break;
@@ -225,15 +235,18 @@ ConvertTemplate = (function() {
         parsingMode: 'auto'
       });
       jsdom.jQueryify(sourceHTML.defaultView, 'http://code.jquery.com/jquery.js', function() {
-        var $, contentBanner, contentCssBanner, contentCssBannerOveflow, creativityHeight, creativityWidth, cssBanner, cssBannerLength, elementClickTag, fnc, l;
+        var $, contentBanner, contentCssBanner, contentCssBannerOveflow, contentUrlDestino, creativityHeight, creativityWidth, cssBanner, cssBannerLength, elementClickTag, fnc, l, urlDestino;
         $ = sourceHTML.defaultView.$;
         contentBanner = $('#page1').parent().html();
         creativityWidth = $('#page1').attr('data-gwd-width');
         creativityHeight = $('#page1').attr('data-gwd-height');
         console.log(creativityWidth);
         console.log(creativityHeight);
+        urlDestino = $('gwd-exit').attr('url');
+        console.log(urlDestino);
         cssBanner = $('style');
         contentCssBannerOveflow = "<style>#page1{overflow:hidden}</style>";
+        contentUrlDestino = '<script>var clickTag = "' + ("" + urlDestino) + '"</script>';
         cssBannerLength = cssBanner.length;
         l = 0;
         while (l < cssBannerLength) {
@@ -262,6 +275,7 @@ ConvertTemplate = (function() {
             headerTemplate.append(contentCssBannerOveflow);
             headerTemplate.append(contentCssBanner);
             headerTemplate.append(elementClickTag);
+            headerTemplate.prepend(contentUrlDestino);
             contentTemplate.prepend(contentBanner);
             replaceImg = $('img[is="gwd-image"]').each(function(index, data) {
               var source, tag;

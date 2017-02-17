@@ -28,11 +28,13 @@ class ConvertTemplate
             when 'buscape' then srcAdserver = './templates/buscape'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'cbn' then srcAdserver = './templates/cbn'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dbcm' then srcAdserver = './templates/dbcm'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'dbcm_loop' then srcAdserver = './templates/dbcm_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dcm_africa' then srcAdserver = './templates/dcm_africa'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dcm_africa_loop' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'dcStudio' then srcAdserver = './templates/dcm_africa_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'estadao' then srcAdserver = './templates/estadao'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'gdnAdword' then srcAdserver = './templates/gdnAdword'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
+            when 'gdnAdword_loop' then srcAdserver = './templates/gdnAdword_loop'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'globo' then srcAdserver = './templates/globo'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'ig' then srcAdserver = './templates/ig'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
             when 'infomoney' then srcAdserver = './templates/infomoney'; destAdserver = "./convert/#{uuid}/#{adServer}"; pathIMGS = "#{destAdserver}";
@@ -110,8 +112,11 @@ class ConvertTemplate
                 #     return
                 
                 # )
+                urlDestino = $('gwd-exit').attr('url')
+                console.log urlDestino
                 cssBanner = $('style')
                 contentCssBannerOveflow = "<style>#page1{overflow:hidden}</style>"
+                contentUrlDestino = '<script>var clickTag = "'+"#{urlDestino}"+'"</script>'
                 # contentCssBanner = cssBanner[6].outerHTML
                 cssBannerLength = cssBanner.length
                 # console.log cssBannerLength
@@ -146,6 +151,7 @@ class ConvertTemplate
                                 adConfig.creativityWidth = "'+"#{creativityWidth}"+'";
                                 adConfig.creativityHeight = "'+"#{creativityHeight}"+'";
                             ')
+
                         #  /// ADMOTION SPECS
                         # bannerDimensions = $('#bannerDimensions')
                         # bannerDimensions.html('
@@ -155,6 +161,7 @@ class ConvertTemplate
                         # ')
                         # bannerDimensions.removeAttr 'id'
                         bodyTemplate.append('
+                            
                             <script>
                             window.onload = function(){
                                 var bannerOutput = document.getElementById("page1");
@@ -167,6 +174,8 @@ class ConvertTemplate
                         headerTemplate.append contentCssBannerOveflow
                         headerTemplate.append contentCssBanner
                         headerTemplate.append elementClickTag
+                        headerTemplate.prepend contentUrlDestino
+                        
                         # console.log contentCssBanner
                         contentTemplate.prepend contentBanner
 
